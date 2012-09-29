@@ -1,0 +1,25 @@
+{
+    "name": "vincet/base-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony VinceTBaseBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vincent Touzet",
+            "email": "vincent.touzet@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/symfony": "2.0.*",
+        "sonata-project/admin-bundle": "2.0.*",
+        "sonata-project/doctrine-orm-admin-bundle": "2.0.*"
+    },
+    "require-dev": {
+        "doctrine/orm": "2.1.*"
+    },
+    "autoload": {
+        "psr-0": { "VinceT\\BaseBundle": "" }
+    },
+    "target-dir": "VinceT/BaseBundle"
+}
