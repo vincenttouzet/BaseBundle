@@ -86,3 +86,4 @@ services:
         - { name: sonata.admin, manager_type: orm, group: Blog, label: Post }
       arguments: [null, Acme\DemoBundle\Entity\Post, AcmeDemoBundle:PostAdmin]
 ```
+
