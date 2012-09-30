@@ -13,6 +13,8 @@ namespace VinceT\BaseBundle\Manager;
 
 use Sonata\DoctrineORMAdminBundle\Model\ModelManager;
 use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -185,6 +187,39 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     public function postDelete($object)
     {
 
+    }
+
+    /**
+     * Retrieve objects from a batch request
+     *
+     * @param string              $class      Class name
+     * @param ProxyQueryInterface $queryProxy ProxyQueryInterface instance
+     *
+     * @throws \Exception
+     * @return null
+     */
+    public function getBatchObjects($class, ProxyQueryInterface $queryProxy)
+    {
+        $queryProxy->select('DISTINCT '.$queryProxy->getRootAlias());
+        return $queryProxy->getQuery()->execute();
+    }
+
+
+    /**
+     * Override of Sonata\DoctrineORMAdminBundle\Model\ModelManager::batchDelete
+     *
+     * @param string              $class      class name
+     * @param ProxyQueryInterface $queryProxy ProxyQueryInterface instance
+     *
+     * @throws \Exception
+     * @return null
+     */
+    public function batchDelete($class, ProxyQueryInterface $queryProxy)
+    {
+        $objects = $this->getBatchObjects($class, $queryProxy);
+        foreach ($objects as $object) {
+            $this->delete($object);
+        }
     }
 
 }
