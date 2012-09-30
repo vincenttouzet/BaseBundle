@@ -135,7 +135,7 @@ class BaseAdminController extends CRUDController
             return $this->batchActionDeleteException($e);
         }
     }
-    
+
     /**
      * batchActionDeleteException
      *
