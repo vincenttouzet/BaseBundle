@@ -1,0 +1,50 @@
+<?php
+
+namespace {{ namespace }}\Admin;
+
+use Sonata\AdminBundle\Admin\Admin as BaseAdmin;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
+
+class {{ entityName }}Admin extends BaseAdmin
+{
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+{% for field in metadata.fieldMappings %}
+    {% if field.fieldName not in metadata.identifier %}
+    ->add('{{ field.fieldName }}')
+    {% endif %}
+{% endfor %}
+    ;
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+{% for field in metadata.fieldMappings %}
+            ->add('{{ field.fieldName }}')
+{% endfor %}
+        ;
+    }
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+{% for field in metadata.fieldMappings %}
+            ->add('{{ field.fieldName }}')
+{% endfor %}
+        ;
+    }
+
+    protected function configureShowFields(ShowMapper $showMapper)
+    {
+        $showMapper
+{% for field in metadata.fieldMappings %}
+            ->add('{{ field.fieldName }}')
+{% endfor %}
+        ;
+    }
+}
