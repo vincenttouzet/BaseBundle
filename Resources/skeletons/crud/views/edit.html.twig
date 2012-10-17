@@ -1,0 +1,27 @@
+{% raw %}{% extends '::base.html.twig' %}
+
+{% block content %}{% endraw %}
+    <h1>{{ entity }} edit</h1>
+
+    {% raw %}{% if entity.id %}{% endraw %}
+        <form action="{{ "{{ path('"~ route_name_prefix ~"_update', { 'id': entity.id }) }}" }}" method="post" {{ "{{ form_enctype(form) }}" }}>
+    {% raw %}{% else %}{% endraw %}
+        <form action="{{ "{{ path('"~ route_name_prefix ~"_create') }}" }}" method="post" {{ "{{ form_enctype(form) }}" }}>
+    {% raw %}{% endif %}{% endraw %}
+        {{ "{{ form_widget(form) }}" }}
+        <p>
+
+            {% raw %}{% if entity.id %}{% endraw %}
+                <input type="submit" value="Edit"/>
+            {% raw %}{% else %}{% endraw %}
+                <input type="submit" value="Create"/>
+            {% raw %}{% endif %}{% endraw %}
+        </p>
+    </form>
+
+    {% raw %}{% if entity.id %}{% endraw %}
+        {% set hide_edit, hide_delete = true, false %}
+        {% include 'views/others/record_actions.html.twig' %}
+    {% raw %}{% endif %}{% endraw %}
+
+{% raw %}{% endblock %}{% endraw %}

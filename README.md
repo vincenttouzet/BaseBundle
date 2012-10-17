@@ -6,7 +6,7 @@ This bundle define base class for improve your development.
 It requires SonataAdminBundle and SonataDoctrineORMAdminBundle
 
 Entity Management
--------------
+-----------------
 
 This bundle defines a BaseManager class that is compatible with SonataAdmin ModelManager.
 
@@ -62,7 +62,7 @@ services:
 Your front and Admin application will now use the same entity manager.
 
 Admin Controller
-------------
+----------------
 
 This bundle also define a BaseAdminController that catch exception throwed during an admin action. It is very easy to use :
 
@@ -87,3 +87,20 @@ services:
       arguments: [null, Acme\DemoBundle\Entity\Post, AcmeDemoBundle:PostAdmin]
 ```
 
+Commands
+--------
+
+To make your development faster a command can generate the following classes for an entity, bundle or namespace :
+* Admin/EntityAdmin
+* Controller/Admin/EntityAdminController
+* Manager/EntityManager
+
+and create/update the following files :
+* Resources/config/services.yml
+* Resources/translations/YourBundle.en.yml
+* Resources/translations/YourBundle.fr.yml
+
+To use it :
+```
+php app/console vincet:generate MyBundle:Post
+```
