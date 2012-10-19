@@ -6,6 +6,7 @@
      * @Route("/new", name="{{ route_name_prefix }}_new")
      * @Template()
 {% endif %}
+     * @return \Symfony\Component\HttpFoundation\Response | \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction()
     {
@@ -18,9 +19,12 @@
             'form'   => $form->createView(),
         );
 {% else %}
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
+        return $this->render(
+            '{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', 
+            array(
+                'entity' => $entity,
+                'form'   => $form->createView(),
+            )
+        );
 {% endif %}
     }

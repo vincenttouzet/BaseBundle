@@ -2,11 +2,14 @@
     /**
      * Creates a new {{ entity }} entity.
      *
+     * @param Request $request Request instance
+     *
 {% if 'annotation' == format %}
      * @Route("/create", name="{{ route_name_prefix }}_create")
      * @Method("POST")
      * @Template("{{ bundle }}:{{ entity }}:new.html.twig")
 {% endif %}
+     * @return \Symfony\Component\HttpFoundation\Response | \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -32,9 +35,12 @@
             'form'   => $form->createView(),
         );
 {% else %}
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        ));
+        return $this->render(
+            '{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', 
+            array(
+                'entity' => $entity,
+                'form'   => $form->createView(),
+            )
+        );
 {% endif %}
     }

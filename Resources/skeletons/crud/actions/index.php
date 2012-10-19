@@ -6,6 +6,7 @@
      * @Route("/", name="{{ route_name_prefix }}")
      * @Template()
 {% endif %}
+     * @return \Symfony\Component\HttpFoundation\Response | \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function indexAction()
     {
@@ -18,8 +19,11 @@
             'entities' => $entities,
         );
 {% else %}
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:index.html.twig', array(
-            'entities' => $entities,
-        ));
+        return $this->render(
+            '{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:index.html.twig', 
+            array(
+                'entities' => $entities,
+            )
+        );
 {% endif %}
     }

@@ -2,23 +2,19 @@
     /**
      * Finds and displays a {{ entity }} entity.
      *
+     * @param {{ entity_class }} $entity Entity
+     *
 {% if 'annotation' == format %}
      * @Route("/{id}/show", name="{{ route_name_prefix }}_show")
      * @Template()
 {% endif %}
+     * @return \Symfony\Component\HttpFoundation\Response | \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function showAction($id)
+    public function showAction({{ entity_class }} $entity)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find {{ entity }} entity.');
-        }
 {% if 'delete' in actions %}
 
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->_createDeleteForm($entity->getId());
 {% endif %}
 
 {% if 'annotation' == format %}
@@ -29,11 +25,14 @@
 {% endif %}
         );
 {% else %}
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', array(
-            'entity'      => $entity,
+        return $this->render(
+            '{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', 
+            array(
+                'entity'      => $entity,
 {% if 'delete' in actions %}
-            'delete_form' => $deleteForm->createView(),
-{%- endif %}
-        ));
+                'delete_form' => $deleteForm->createView(),
+{% endif %}
+            )
+        );
 {% endif %}
     }

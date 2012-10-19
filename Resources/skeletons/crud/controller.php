@@ -1,4 +1,13 @@
 <?php
+/**
+ * This file is part of {{ bundle }} for Symfony2
+ *
+ * @category {{ namespace|vendorName}}
+ * @package  {{ bundle }}
+ * @author   Your name <your.mail@example.com>
+ * @license  MIT License view the LICENSE file that was distributed with this source code.
+ * @link     
+ */
 
 namespace {{ namespace }}\Controller{{ entity_namespace ? '\\' ~ entity_namespace : '' }};
 
@@ -21,6 +30,11 @@ use {{ namespace }}\Form\{{ entity }}Type;
 /**
  * {{ entity }} controller.
  *
+ * @category {{ namespace|vendorName}}
+ * @package  {{ bundle }}
+ * @author   Your name <your.mail@example.com>
+ * @license  MIT License view the LICENSE file that was distributed with this source code.
+ * @link     
 {% if 'annotation' == format %}
  * @Route("/{{ route_prefix }}")
 {% endif %}
