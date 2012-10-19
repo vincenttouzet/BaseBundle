@@ -13,38 +13,57 @@ class {{ entityName }}Admin extends BaseAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-{% for field in metadata.fieldMappings %}
-    {% if field.fieldName not in metadata.identifier %}
-    ->add('{{ field.fieldName }}')
-    {% endif %}
-{% endfor %}
-    ;
+        {%- for field in metadata.fieldMappings %}
+            {%- if field.fieldName not in metadata.identifier %}
+
+            ->add('{{ field.fieldName }}')
+
+            {%- endif %}
+        {%- endfor %}
+;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-{% for field in metadata.fieldMappings %}
+        {%- for field in metadata.fieldMappings %}
+
             ->add('{{ field.fieldName }}')
-{% endfor %}
-        ;
+
+        {%- endfor %}
+;
     }
 
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-{% for field in metadata.fieldMappings %}
+        {%- for field in metadata.fieldMappings %}
+
             ->add('{{ field.fieldName }}')
-{% endfor %}
-        ;
+
+        {%- endfor %}
+
+            ->add(
+                '_actions', 
+                'actions', 
+                array(
+                    'actions' => array(
+                        'view' => array(),
+                        'edit' => array(),
+                        'delete' => array(),
+                    )
+                )
+            );
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-{% for field in metadata.fieldMappings %}
+        {%- for field in metadata.fieldMappings %}
+
             ->add('{{ field.fieldName }}')
-{% endfor %}
-        ;
+
+        {%- endfor %}
+;
     }
 }
