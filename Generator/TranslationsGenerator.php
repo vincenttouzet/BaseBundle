@@ -53,8 +53,8 @@ class TranslationsGenerator extends Generator
      */
     protected function generateLangEn($namespace, $basePath, ClassMetadata $metadata)
     {
-        $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().'.en.yml';
         $entityName = $this->getEntityNameFromMetadata($metadata);
+        $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().$entityName.'.en.yml';
         if ( is_file($yamlFile) ) {
             $trans = Yaml::parse($yamlFile);
         } else {
@@ -94,8 +94,8 @@ class TranslationsGenerator extends Generator
      */
     protected function generateLangFr($namespace, $basePath, ClassMetadata $metadata)
     {
-        $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().'.fr.yml';
         $entityName = $this->getEntityNameFromMetadata($metadata);
+        $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().$entityName.'.fr.yml';
         if ( is_file($yamlFile) ) {
             $trans = Yaml::parse($yamlFile);
         } else {

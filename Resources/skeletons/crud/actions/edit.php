@@ -2,23 +2,18 @@
     /**
      * Displays a form to edit an existing {{ entity }} entity.
      *
+     * @param {{ entity_class }} $entity Entity
+     *
 {% if 'annotation' == format %}
      * @Route("/{id}/edit", name="{{ route_name_prefix }}_edit")
      * @Template()
 {% endif %}
+     * @return \Symfony\Component\HttpFoundation\Response | \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function editAction($id)
+    public function editAction({{ entity_class }} $entity)
     {
-        $em = $this->get('{{ bundle|camelizeBundle }}.{{ entity|lower }}_manager');
-
-        $entity = $em->getRepository('{{ bundle }}:{{ entity }}')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find {{ entity }} entity.');
-        }
-
         $editForm = $this->createForm(new {{ entity_class }}Type(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $deleteForm = $this->_createDeleteForm($entity->getId());
 
 {% if 'annotation' == format %}
         return array(
@@ -27,10 +22,13 @@
             'delete_form' => $deleteForm->createView(),
         );
 {% else %}
-        return $this->render('{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render(
+            '{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:edit.html.twig', 
+            array(
+                'entity'      => $entity,
+                'form'   => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            )
+        );
 {% endif %}
     }

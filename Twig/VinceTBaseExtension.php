@@ -32,6 +32,7 @@ class VinceTBaseExtension extends \Twig_Extension
         return array(
             'camelizeBundle' => new \Twig_Filter_Method($this, 'camelizeBundle'),
             'camelize' => new \Twig_Filter_Method($this, 'camelize'),
+            'vendorName' => new \Twig_Filter_Method($this, 'vendorName'),
         );
     }
 
@@ -62,6 +63,19 @@ class VinceTBaseExtension extends \Twig_Extension
         $string = $this->camelize($string);
         $string = str_replace('_bundle', '', $string);
         return $string;
+    }
+
+    /**
+     * Get a vendor name from a bundle namespace
+     *
+     * @param string $namespace Namespace of the vendor's bundle
+     *
+     * @return string
+     */
+    public function vendorName($namespace)
+    {
+        $arr = explode('\\', $namespace);
+        return $arr[0];
     }
 
     /**
