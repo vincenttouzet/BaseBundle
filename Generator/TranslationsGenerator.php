@@ -61,18 +61,38 @@ class TranslationsGenerator extends Generator
             $trans = array();            
         }
 
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_list'] = $entityName.' List';
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_show'] = 'Show '.$entityName;
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_create'] = 'Create '.$entityName;
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_edit'] = 'Edit '.$entityName;
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_history'] = $entityName.' History';
+
+        if ( !array_key_exists('link_'.strtolower($entityName).'_list', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_list'] = $entityName.' List';
+        }
+        if ( !array_key_exists('link_'.strtolower($entityName).'_show', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_show'] = 'Show '.$entityName;
+        }
+        if ( !array_key_exists('link_'.strtolower($entityName).'_create', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_create'] = 'Create '.$entityName;
+        }
+        if ( !array_key_exists('link_'.strtolower($entityName).'_edit', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_edit'] = 'Edit '.$entityName;
+        }
+        if ( !array_key_exists('link_'.strtolower($entityName).'_history', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_history'] = $entityName.' History';
+        }
 
         foreach ( $metadata->fieldMappings as $field ) {
-            $trans['list']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
-            $trans['filter']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
-            $trans['show']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
-            $trans['form']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            if ( !array_key_exists('label_'.$field['fieldName'], $trans['list']) ) {
+                $trans['list']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            }
+            if ( !array_key_exists('label_'.$field['fieldName'], $trans['filter']) ) {
+                $trans['filter']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            }
+            if ( !array_key_exists('label_'.$field['fieldName'], $trans['show']) ) {
+                $trans['show']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            }
+            if ( !array_key_exists('label_'.$field['fieldName'], $trans['form']) ) {
+                $trans['form']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            }
         }
+        $trans['list']['label__actions'] = 'Actions';
 
 
         $out = Yaml::dump($trans, 4);
@@ -102,18 +122,38 @@ class TranslationsGenerator extends Generator
             $trans = array();            
         }
 
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_list'] = $entityName.'s';
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_show'] = 'Vue de '.$entityName;
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_create'] = 'Création de '.$entityName;
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_edit'] = 'Édition de '.$entityName;
-        $trans['breadcrumb']['link_'.strtolower($entityName).'_history'] = 'Historique de '.$entityName;
+        
+        if ( !array_key_exists('link_'.strtolower($entityName).'_list', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_list'] = $entityName.'s';
+        }
+        if ( !array_key_exists('link_'.strtolower($entityName).'_show', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_show'] = 'Fiche '.$entityName;
+        }
+        if ( !array_key_exists('link_'.strtolower($entityName).'_create', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_create'] = 'Création de '.$entityName;
+        }
+        if ( !array_key_exists('link_'.strtolower($entityName).'_edit', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_edit'] = 'Édition de '.$entityName;
+        }
+        if ( !array_key_exists('link_'.strtolower($entityName).'_history', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.strtolower($entityName).'_history'] = 'Historique de '.$entityName;
+        }
 
         foreach ( $metadata->fieldMappings as $field ) {
-            $trans['list']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
-            $trans['filter']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
-            $trans['show']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
-            $trans['form']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            if ( !array_key_exists('label_'.$field['fieldName'], $trans['list']) ) {
+                $trans['list']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            }
+            if ( !array_key_exists('label_'.$field['fieldName'], $trans['filter']) ) {
+                $trans['filter']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            }
+            if ( !array_key_exists('label_'.$field['fieldName'], $trans['show']) ) {
+                $trans['show']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            }
+            if ( !array_key_exists('label_'.$field['fieldName'], $trans['form']) ) {
+                $trans['form']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            }
         }
+        $trans['list']['label__actions'] = 'Actions';
 
 
         $out = Yaml::dump($trans, 4);

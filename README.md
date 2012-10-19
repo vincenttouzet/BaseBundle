@@ -104,3 +104,10 @@ To use it :
 ```
 php app/console vincet:generate MyBundle:Post
 ```
+
+Another command generate a frontend CRUD controller. It's based on the \Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCrudCommand
+
+To use it :
+```
+php app/console vincet:generate:crud MyBundle:Post
+```
