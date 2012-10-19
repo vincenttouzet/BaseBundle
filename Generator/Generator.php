@@ -11,6 +11,8 @@
 
 namespace VinceT\BaseBundle\Generator;
 
+use VinceT\BaseBundle\Twig\VinceTBaseExtension;
+
 /**
  * Generator base class
  *
@@ -22,7 +24,7 @@ namespace VinceT\BaseBundle\Generator;
  */
 abstract class Generator implements GeneratorInterface
 {
-    private $_skeletonDir = null;
+    protected $skeletonDir = null;
     private $_bundleName = null;
 
     /**
@@ -55,6 +57,7 @@ abstract class Generator implements GeneratorInterface
                 'autoescape'       => false,
             )
         );
+        $twig->addExtension(new VinceTBaseExtension());
 
         return $twig->render($template, $parameters);
     }
@@ -142,7 +145,7 @@ abstract class Generator implements GeneratorInterface
      */
     public function getSkeletonDir()
     {
-        return $this->_skeletonDir;
+        return $this->skeletonDir;
     }
     
     /**
@@ -154,7 +157,7 @@ abstract class Generator implements GeneratorInterface
      */
     public function setSkeletonDir($skeletonDir)
     {
-        $this->_skeletonDir = $skeletonDir;
+        $this->skeletonDir = $skeletonDir;
         return $this;
     }
     

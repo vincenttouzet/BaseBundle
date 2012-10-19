@@ -8,7 +8,7 @@
             <tr>
             {%- for field, metadata in fields %}
 
-                <th>{{ field|capitalize }}</th>
+                <th>{{ '{{ \'list.label_'~field~'\'|trans({}, \''~bundle~entity_class~'\') }}' }}</th>
 
             {%- endfor %}
 
@@ -27,6 +27,16 @@
             {%- elseif metadata.type in ['date', 'datetime'] %}
 
                 <td>{{ '{% if entity.'~ field|replace({'_': ''}) ~' %}{{ entity.'~ field|replace({'_': ''}) ~'|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+
+            {%- elseif metadata.type in ['boolean'] %}
+
+                <td>
+                {{ '{% if entity.' ~ field|replace({'_': ''}) ~ ' %}' }}
+                    <img src="{{ '{{' }} asset('bundles/sonataadmin/famfamfam/accept.png') {{ '}}' }}">
+                {{ '{% else %}' }}
+                    <img src="{{ '{{' }} asset('bundles/sonataadmin/famfamfam/exclamation.png') {{ '}}' }}">
+                {{ '{% endif %}' }}
+                </td>
 
             {%- else %}
 

@@ -72,7 +72,7 @@ class ServicesGenerator extends Generator
             'calls' => array(
                 array(
                     'setTranslationDomain',
-                    array($bundleName)
+                    array($bundleName.$entityName)
                 ),
                 array(
                     'setModelManager',

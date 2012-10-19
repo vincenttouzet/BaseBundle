@@ -33,5 +33,5 @@ interface GeneratorInterface
      *
      * @return [type]
      */
-    public function generate($namespace, $basePath, ClassMetadata $metadata);
+    //public function generate($namespace, $basePath, ClassMetadata $metadata);
 }
