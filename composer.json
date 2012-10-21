@@ -11,9 +11,9 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "sonata-project/doctrine-orm-admin-bundle": "master"
     },
     "require-dev": {
+        "sonata-project/doctrine-orm-admin-bundle": "master"
         "doctrine/orm": "2.1.*"
     },
     "autoload": {
