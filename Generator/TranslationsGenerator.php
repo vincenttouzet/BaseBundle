@@ -55,12 +55,7 @@ class TranslationsGenerator extends Generator
     {
         $entityName = $this->getEntityNameFromMetadata($metadata);
         $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().$entityName.'.en.yml';
-        if ( is_file($yamlFile) ) {
-            $trans = Yaml::parse($yamlFile);
-        } else {
-            $trans = array();            
-        }
-
+        $trans = $this->getTrans($yamlFile);
 
         if ( !array_key_exists('link_'.strtolower($entityName).'_list', $trans['breadcrumb']) ) {
             $trans['breadcrumb']['link_'.strtolower($entityName).'_list'] = $entityName.' List';
@@ -79,20 +74,22 @@ class TranslationsGenerator extends Generator
         }
 
         foreach ( $metadata->fieldMappings as $field ) {
-            if ( !array_key_exists('label_'.$field['fieldName'], $trans['list']) ) {
-                $trans['list']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            $fieldName = $field['fieldName'];
+            $key = $this->camelize($fieldName);
+            if ( !array_key_exists('label_'.$key, $trans['list']) ) {
+                $trans['list']['label_'.$key] = $this->toText($fieldName);
             }
-            if ( !array_key_exists('label_'.$field['fieldName'], $trans['filter']) ) {
-                $trans['filter']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            if ( !array_key_exists('label_'.$key, $trans['filter']) ) {
+                $trans['filter']['label_'.$key] = $this->toText($fieldName);
             }
-            if ( !array_key_exists('label_'.$field['fieldName'], $trans['show']) ) {
-                $trans['show']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            if ( !array_key_exists('label_'.$key, $trans['show']) ) {
+                $trans['show']['label_'.$key] = $this->toText($fieldName);
             }
-            if ( !array_key_exists('label_'.$field['fieldName'], $trans['form']) ) {
-                $trans['form']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            if ( !array_key_exists('label_'.$key, $trans['form']) ) {
+                $trans['form']['label_'.$key] = $this->toText($fieldName);
             }
         }
-        $trans['list']['label__actions'] = 'Actions';
+        $trans['list']['label__action'] = 'Actions';
 
 
         $out = Yaml::dump($trans, 4);
@@ -116,12 +113,7 @@ class TranslationsGenerator extends Generator
     {
         $entityName = $this->getEntityNameFromMetadata($metadata);
         $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().$entityName.'.fr.yml';
-        if ( is_file($yamlFile) ) {
-            $trans = Yaml::parse($yamlFile);
-        } else {
-            $trans = array();            
-        }
-
+        $trans = $this->getTrans($yamlFile);
         
         if ( !array_key_exists('link_'.strtolower($entityName).'_list', $trans['breadcrumb']) ) {
             $trans['breadcrumb']['link_'.strtolower($entityName).'_list'] = $entityName.'s';
@@ -140,20 +132,22 @@ class TranslationsGenerator extends Generator
         }
 
         foreach ( $metadata->fieldMappings as $field ) {
-            if ( !array_key_exists('label_'.$field['fieldName'], $trans['list']) ) {
-                $trans['list']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            $fieldName = $field['fieldName'];
+            $key = $this->camelize($fieldName);
+            if ( !array_key_exists('label_'.$key, $trans['list']) ) {
+                $trans['list']['label_'.$key] = $this->toText($fieldName);
             }
-            if ( !array_key_exists('label_'.$field['fieldName'], $trans['filter']) ) {
-                $trans['filter']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            if ( !array_key_exists('label_'.$key, $trans['filter']) ) {
+                $trans['filter']['label_'.$key] = $this->toText($fieldName);
             }
-            if ( !array_key_exists('label_'.$field['fieldName'], $trans['show']) ) {
-                $trans['show']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            if ( !array_key_exists('label_'.$key, $trans['show']) ) {
+                $trans['show']['label_'.$key] = $this->toText($fieldName);
             }
-            if ( !array_key_exists('label_'.$field['fieldName'], $trans['form']) ) {
-                $trans['form']['label_'.$field['fieldName']] = $this->toText($field['fieldName']);
+            if ( !array_key_exists('label_'.$key, $trans['form']) ) {
+                $trans['form']['label_'.$key] = $this->toText($fieldName);
             }
         }
-        $trans['list']['label__actions'] = 'Actions';
+        $trans['list']['label__action'] = 'Actions';
 
 
         $out = Yaml::dump($trans, 4);
@@ -178,5 +172,28 @@ class TranslationsGenerator extends Generator
         return ucfirst($fieldName);
     }
 
+    /**
+     * Load translation file
+     *
+     * @param string $filename Filename
+     *
+     * @return array
+     */
+    protected function getTrans($filename)
+    {
+        if ( is_file($filename) ) {
+            $trans = Yaml::parse($filename);
+        } else {
+            $trans = array();            
+        }
+        
+        $keys = array('breadcrumb', 'list', 'filter', 'show', 'form');
+        foreach ($keys as $key) {
+            if ( !array_key_exists($key, $trans) ) {
+                $trans[$key] = array();
 
+            }
+        }
+        return $trans;
+    }
 }
