@@ -43,17 +43,13 @@ class {{ entityName }}Admin extends BaseAdmin
 
         {%- endfor %}
 
-            ->add(
-                '_actions', 
-                'actions', 
-                array(
-                    'actions' => array(
-                        'view' => array(),
-                        'edit' => array(),
-                        'delete' => array(),
-                    )
+            ->add('_action', 'actions', array(
+                'actions' => array(
+                    'view' => array(),
+                    'edit' => array(),
+                    'delete' => array(),
                 )
-            );
+            ));
     }
 
     protected function configureShowFields(ShowMapper $showMapper)
