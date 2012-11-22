@@ -229,8 +229,12 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
      *
      * @return \Doctrine\ORM\EntityRepository
      */
-    public function getRepository($name)
+    public function getRepository($name = null)
     {
+        if ( is_null($name) || empty($name) ) {
+            $manager_class = get_class($this);
+            $name = str_replace(array('\\Manager\\', 'Manager', '\\'), array(':', '', ''), $manager_class);
+        }
         return $this->container->get('doctrine.orm.entity_manager')->getRepository($name);
     }
 
