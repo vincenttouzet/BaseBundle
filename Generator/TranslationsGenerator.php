@@ -54,23 +54,31 @@ class TranslationsGenerator extends Generator
     protected function generateLangEn($namespace, $basePath, ClassMetadata $metadata)
     {
         $entityName = $this->getEntityNameFromMetadata($metadata);
+        $entityNameCamelized = $this->camelize($entityName);
         $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().$entityName.'.en.yml';
         $trans = $this->getTrans($yamlFile);
 
-        if ( !array_key_exists('link_'.strtolower($entityName).'_list', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_list'] = $entityName.' List';
+        if ( !array_key_exists($entityName, $trans) ) {
+            $trans[$entityName] = $entityName;
         }
-        if ( !array_key_exists('link_'.strtolower($entityName).'_show', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_show'] = 'Show '.$entityName;
+
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_list', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_list'] = $entityName.' List';
         }
-        if ( !array_key_exists('link_'.strtolower($entityName).'_create', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_create'] = 'Create '.$entityName;
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_show', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_show'] = 'Show '.$entityName;
         }
-        if ( !array_key_exists('link_'.strtolower($entityName).'_edit', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_edit'] = 'Edit '.$entityName;
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_create', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_create'] = 'Create '.$entityName;
         }
-        if ( !array_key_exists('link_'.strtolower($entityName).'_history', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_history'] = $entityName.' History';
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_edit', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_edit'] = 'Edit '.$entityName;
+        }
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_delete', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_delete'] = 'Delete '.$entityName;
+        }
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_history', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_history'] = $entityName.' History';
         }
 
         foreach ( $metadata->fieldMappings as $field ) {
@@ -112,23 +120,29 @@ class TranslationsGenerator extends Generator
     protected function generateLangFr($namespace, $basePath, ClassMetadata $metadata)
     {
         $entityName = $this->getEntityNameFromMetadata($metadata);
+        $entityNameCamelized = $this->camelize($entityName);
         $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().$entityName.'.fr.yml';
         $trans = $this->getTrans($yamlFile);
+
+
         
-        if ( !array_key_exists('link_'.strtolower($entityName).'_list', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_list'] = $entityName.'s';
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_list', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_list'] = $entityName.'s';
         }
-        if ( !array_key_exists('link_'.strtolower($entityName).'_show', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_show'] = 'Fiche '.$entityName;
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_show', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_show'] = 'Fiche '.$entityName;
         }
-        if ( !array_key_exists('link_'.strtolower($entityName).'_create', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_create'] = 'Création de '.$entityName;
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_create', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_create'] = 'Création de '.$entityName;
         }
-        if ( !array_key_exists('link_'.strtolower($entityName).'_edit', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_edit'] = 'Édition de '.$entityName;
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_edit', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_edit'] = 'Édition de '.$entityName;
         }
-        if ( !array_key_exists('link_'.strtolower($entityName).'_history', $trans['breadcrumb']) ) {
-            $trans['breadcrumb']['link_'.strtolower($entityName).'_history'] = 'Historique de '.$entityName;
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_delete', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_delete'] = 'Suppression de '.$entityName;
+        }
+        if ( !array_key_exists('link_'.$entityNameCamelized.'_history', $trans['breadcrumb']) ) {
+            $trans['breadcrumb']['link_'.$entityNameCamelized.'_history'] = 'Historique de '.$entityName;
         }
 
         foreach ( $metadata->fieldMappings as $field ) {

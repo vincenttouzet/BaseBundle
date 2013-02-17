@@ -57,18 +57,21 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     /**
      * create new entity in database
      *
-     * @param Object $object Object
+     * @param Object  $object Object
+     * @param Boolean $flush  Flush entity manager
      *
      * @see Sonata\DoctrineORMAdminBundle\Model\ModelManager::create()
      * @return null
      */
-    public function create($object)
+    public function create($object, $flush = true)
     {
         try {
             $entityManager = $this->getEntityManager($object);
             $this->preCreate($object);
             $entityManager->persist($object);
-            $entityManager->flush();
+            if ( $flush ) {
+                $entityManager->flush();
+            }
             $this->postCreate($object);
         } catch (\PDOException $e) {
             throw new ModelManagerException('', 0, $e);
@@ -102,18 +105,21 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     /**
      * update an object into database
      *
-     * @param Object $object Object
+     * @param Object  $object Object
+     * @param Boolean $flush  Flush entity manager
      *
      * @see Sonata\DoctrineORMAdminBundle\Model\ModelManager::update()
      * @return null
      */
-    public function update($object)
+    public function update($object, $flush = true)
     {
         try {
             $entityManager = $this->getEntityManager($object);
             $this->preUpdate($object);
             $entityManager->persist($object);
-            $entityManager->flush();
+            if ( $flush ) {
+                $entityManager->flush();
+            }
             $this->postUpdate($object);
         } catch (\PDOException $e) {
             throw new ModelManagerException('', 0, $e);
@@ -147,18 +153,21 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     /**
      * delete an object from database
      *
-     * @param Object $object Object
+     * @param Object  $object Object
+     * @param Boolean $flush  Flush entity manager
      *
      * @see Sonata\DoctrineORMAdminBundle\Model\ModelManager::delete()
      * @return null
      */
-    public function delete($object)
+    public function delete($object, $flush = true)
     {
         try {
             $entityManager = $this->getEntityManager($object);
             $this->preDelete($object);
             $entityManager->remove($object);
-            $entityManager->flush();
+            if ( $flush ) {
+                $entityManager->flush();
+            }
             $this->postDelete($object);
         } catch (\PDOException $e) {
             throw new ModelManagerException('', 0, $e);
