@@ -1,7 +1,7 @@
 BaseBundle
 ==========
 
-This bundle define base class for improve your development.
+This bundle define base class to improve your development.
 
 It requires SonataAdminBundle and SonataDoctrineORMAdminBundle
 
