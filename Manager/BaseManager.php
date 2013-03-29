@@ -55,6 +55,23 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     }
 
     /**
+     * Persist an object into database
+     *
+     * @param Object  $object Object
+     * @param boolean $flush  Flush entity manager
+     *
+     * @return null
+     */
+    public function persist($object, $flush = true)
+    {
+        if ( $object->getId() ) {
+            $this->update($object, $flush);
+        } else {
+            $this->create($object, $flush);
+        }
+    }
+
+    /**
      * create new entity in database
      *
      * @param Object  $object Object
