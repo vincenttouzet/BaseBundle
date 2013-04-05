@@ -13,7 +13,7 @@ class {{ form_class }} extends AbstractType
         $builder
         {%- for field in fields %}
 
-            ->add('{{ field }}', null, array('label'=>'form.label_{{ field }}', 'translation_domain'=>'{{ bundle ~ entity_class }}'))
+            ->add('{{ field }}', null, array('label'=>'form.label_{{ field|camelize }}', 'translation_domain'=>'{{ bundle ~ entity_class }}'))
 
         {%- endfor %}
 
