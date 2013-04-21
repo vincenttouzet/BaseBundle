@@ -80,6 +80,15 @@ class ServicesGenerator extends Generator
                 )
             )
         );
+        if ( isset($config['services'][$bundleNameCamelized.'.admin.'.strtolower($entityName)]) ) {
+            $current = $config['services'][$bundleNameCamelized.'.admin.'.strtolower($entityName)];
+            $keys = array('class', 'tags', 'arguments', 'calls');
+            foreach ($keys as $key) {
+                if ( isset($current[$key]) ) {
+                    $adminServices[$key] = $current[$key];
+                }
+            }
+        }
         $config['services'][$bundleNameCamelized.'.admin.'.strtolower($entityName)] = $adminServices;
 
 
