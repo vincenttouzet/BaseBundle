@@ -37,6 +37,9 @@ class TranslationsGenerator extends Generator
     public function generate($namespace, $basePath, ClassMetadata $metadata)
     {
         $out = array();
+        if ( !file_exists($basePath.'/Resources/translations') ) {
+            mkdir($basePath.'/Resources/translations', 0777, true);
+        }
         $out[] = $this->generateLangEn($namespace, $basePath, $metadata);
         $out[] = $this->generateLangfr($namespace, $basePath, $metadata);
         return $out;
