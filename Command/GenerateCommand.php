@@ -47,12 +47,12 @@ class GenerateCommand extends ContainerAwareCommand
     {
         parent::configure();
         $this
-            ->setName('vincet:generate')
+            ->setName('vincet:generate:entity')
             ->addArgument('name', InputArgument::REQUIRED, 'A bundle name, a namespace, or a class name')
             ->setDescription('Generates classes')
             ->setHelp(
 <<<EOF
-The <info>vincet:generate</info> command generates following classes.
+The <info>vincet:generate:entity</info> command generates following classes.
     * Admin\EntityAdmin
     * Controller\Admin\EntityAdminController
     * Manager\EntityManager
@@ -65,16 +65,16 @@ You have to limit generation:
 
 * To a bundle:
 
-  <info>php app/console vincent:generate MyCustomBundle</info>
+  <info>php app/console vincet:generate:entity MyCustomBundle</info>
 
 * To a single entity:
 
-  <info>php app/console vincent:generate MyCustomBundle:User</info>
-  <info>php app/console vincent:generate MyCustomBundle/Entity/User</info>
+  <info>php app/console vincet:generate:entity MyCustomBundle:User</info>
+  <info>php app/console vincet:generate:entity MyCustomBundle/Entity/User</info>
 
 * To a namespace
 
-  <info>php app/console vincent:generate MyCustomBundle/Entity</info>
+  <info>php app/console vincet:generate:entity MyCustomBundle/Entity</info>
 EOF
             );
     }
