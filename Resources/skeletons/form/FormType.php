@@ -15,16 +15,16 @@ class {{ form_class }} extends AbstractType
 
             ->add('{{ field }}', null, array('label'=>'form.label_{{ field|camelize }}', 'translation_domain'=>'{{ bundle ~ entity_class }}'))
 
-        {%- endfor %}
-
-        ;
+        {%- endfor %};
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => '{{ namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}'
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => '{{ namespace }}\Entity{{ entity_namespace ? '\\' ~ entity_namespace : '' }}\{{ entity_class }}'
+            )
+        );
     }
 
     public function getName()

@@ -13,7 +13,7 @@
      */
     public function deleteAction(Request $request, {{ entity_class }} $entity)
     {
-        $form = $this->_createDeleteForm($entity->getId());
+        $form = $this->createDeleteForm($entity->getId());
         $form->bind($request);
 
         if ($form->isValid()) {
@@ -31,7 +31,7 @@
      *
      * @return \Symfony\Component\Form\Form
      */
-    private function _createDeleteForm($id)
+    private function createDeleteForm($id)
     {
         return $this->createFormBuilder(array('id' => $id))
             ->add('id', 'hidden')

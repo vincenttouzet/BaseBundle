@@ -26,7 +26,7 @@
         );
 {% else %}
         return $this->render(
-            '{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig', 
+            '{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:show.html.twig',
             array(
                 'entity'      => $entity,
 {% if 'delete' in actions %}

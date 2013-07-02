@@ -20,7 +20,7 @@
         );
 {% else %}
         return $this->render(
-            '{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:index.html.twig', 
+            '{{ bundle }}:{{ entity|replace({'\\': '/'}) }}:index.html.twig',
             array(
                 'entities' => $entities,
             )
