@@ -49,7 +49,7 @@ abstract class Generator implements GeneratorInterface
     protected function render($template, $parameters)
     {
         $twig = new \Twig_Environment(
-            new \Twig_Loader_Filesystem($this->getSkeletonDir()), 
+            new \Twig_Loader_Filesystem($this->getSkeletonDir()),
             array(
                 'debug'            => true,
                 'cache'            => false,
@@ -97,6 +97,7 @@ abstract class Generator implements GeneratorInterface
     protected function getEntityNameFromMetadata($metadata)
     {
         $name_explode = explode('\\', $metadata->name);
+
         return $name_explode[count($name_explode)-1];
     }
 
@@ -112,54 +113,56 @@ abstract class Generator implements GeneratorInterface
         $string = preg_replace('#([A-Z])#', '_\\1', $string);
         $string = strtolower($string);
         $string = trim($string, '_');
+
         return $string;
     }
 
     /**
      * getBundleName
-     * 
+     *
      * @return string
      */
     public function getBundleName()
     {
         return $this->_bundleName;
     }
-    
+
     /**
      * setBundleName
-     * 
+     *
      * @param string $bundleName Name of the bundle to make generation
-     * 
+     *
      * @return Generator
      */
     public function setBundleName($bundleName)
     {
         $this->_bundleName = $bundleName;
+
         return $this;
     }
 
     /**
      * getSkeletonDir
-     * 
+     *
      * @return string
      */
     public function getSkeletonDir()
     {
         return $this->skeletonDir;
     }
-    
+
     /**
      * setSkeletonDir
-     * 
+     *
      * @param string $skeletonDir Path to skeletons files
-     * 
+     *
      * @return Generator
      */
     public function setSkeletonDir($skeletonDir)
     {
         $this->skeletonDir = $skeletonDir;
+
         return $this;
     }
-    
-    
+
 }

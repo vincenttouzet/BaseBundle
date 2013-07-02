@@ -48,6 +48,7 @@ class VinceTBaseExtension extends \Twig_Extension
         $string = preg_replace('#([A-Z])#', '_\\1', $string);
         $string = strtolower($string);
         $string = trim($string, '_');
+
         return $string;
     }
 
@@ -62,6 +63,7 @@ class VinceTBaseExtension extends \Twig_Extension
     {
         $string = $this->camelize($string);
         $string = str_replace('_bundle', '', $string);
+
         return $string;
     }
 
@@ -75,6 +77,7 @@ class VinceTBaseExtension extends \Twig_Extension
     public function vendorName($namespace)
     {
         $arr = explode('\\', $namespace);
+
         return $arr[0];
     }
 

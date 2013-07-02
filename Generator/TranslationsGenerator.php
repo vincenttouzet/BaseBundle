@@ -42,6 +42,7 @@ class TranslationsGenerator extends Generator
         }
         $out[] = $this->generateLangEn($namespace, $basePath, $metadata);
         $out[] = $this->generateLangfr($namespace, $basePath, $metadata);
+
         return $out;
     }
 
@@ -84,7 +85,7 @@ class TranslationsGenerator extends Generator
             $trans['breadcrumb']['link_'.$entityNameCamelized.'_history'] = $entityName.' History';
         }
 
-        foreach ( $metadata->fieldMappings as $field ) {
+        foreach ($metadata->fieldMappings as $field) {
             $fieldName = $field['fieldName'];
             $key = $this->camelize($fieldName);
             if ( !array_key_exists('label_'.$key, $trans['list']) ) {
@@ -101,7 +102,6 @@ class TranslationsGenerator extends Generator
             }
         }
         $trans['list']['label__action'] = 'Actions';
-
 
         $out = Yaml::dump($trans, 4);
         if ( file_put_contents($yamlFile, $out) !== false ) {
@@ -127,8 +127,6 @@ class TranslationsGenerator extends Generator
         $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().$entityName.'.fr.yml';
         $trans = $this->getTrans($yamlFile);
 
-
-        
         if ( !array_key_exists('link_'.$entityNameCamelized.'_list', $trans['breadcrumb']) ) {
             $trans['breadcrumb']['link_'.$entityNameCamelized.'_list'] = $entityName.'s';
         }
@@ -148,7 +146,7 @@ class TranslationsGenerator extends Generator
             $trans['breadcrumb']['link_'.$entityNameCamelized.'_history'] = 'Historique de '.$entityName;
         }
 
-        foreach ( $metadata->fieldMappings as $field ) {
+        foreach ($metadata->fieldMappings as $field) {
             $fieldName = $field['fieldName'];
             $key = $this->camelize($fieldName);
             if ( !array_key_exists('label_'.$key, $trans['list']) ) {
@@ -165,7 +163,6 @@ class TranslationsGenerator extends Generator
             }
         }
         $trans['list']['label__action'] = 'Actions';
-
 
         $out = Yaml::dump($trans, 4);
         if ( file_put_contents($yamlFile, $out) !== false ) {
@@ -186,6 +183,7 @@ class TranslationsGenerator extends Generator
     {
         $fieldName = $this->camelize($fieldName);
         $fieldName = str_replace('_', ' ', $fieldName);
+
         return ucfirst($fieldName);
     }
 
@@ -201,9 +199,9 @@ class TranslationsGenerator extends Generator
         if ( is_file($filename) ) {
             $trans = Yaml::parse($filename);
         } else {
-            $trans = array();            
+            $trans = array();
         }
-        
+
         $keys = array('breadcrumb', 'list', 'filter', 'show', 'form');
         foreach ($keys as $key) {
             if ( !array_key_exists($key, $trans) ) {
@@ -211,6 +209,7 @@ class TranslationsGenerator extends Generator
 
             }
         }
+
         return $trans;
     }
 }

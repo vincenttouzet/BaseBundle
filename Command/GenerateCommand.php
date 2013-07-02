@@ -79,7 +79,6 @@ EOF
             );
     }
 
-
     /**
      * execute command
      *
@@ -187,6 +186,7 @@ EOF
     public function getEntityNameFromMetadata($metadata)
     {
         $name_explode = explode('\\', $metadata->name);
+
         return $name_explode[count($name_explode)-1];
     }
 
@@ -202,7 +202,7 @@ EOF
         $bundles = $this->getContainer()->get('kernel')->getBundles();
         $bundleName = '';
 
-        foreach ( $bundles as $type=>$bundle ) {
+        foreach ($bundles as $type=>$bundle) {
             $className = get_class($bundle);
 
             $entityClass = substr($rootEntityName, 0, strpos($rootEntityName, '\\Entity\\'));
@@ -211,12 +211,13 @@ EOF
                 $bundleName = $type;
             }
         }
+
         return $bundleName;
     }
 
     /**
      * getNamespace
-     * 
+     *
      * @return string
      */
     public function getNamespace()
@@ -226,22 +227,22 @@ EOF
 
     /**
      * getMetadata
-     * 
+     *
      * @return \Doctrine\Bundle\DoctrineBundle\Mapping\ClassMetadataCollection
      */
     public function getMetadatas()
     {
         return $this->_metadatas;
     }
-    
+
     /**
      * getBasePath
-     * 
+     *
      * @return string
      */
     public function getBasePath()
     {
         return $this->_basePath;
     }
-    
+
 }

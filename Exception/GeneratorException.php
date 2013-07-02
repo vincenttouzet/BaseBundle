@@ -11,7 +11,6 @@
 
 namespace VinceT\BaseBundle\Exception;
 
-
 /**
  * GeneratorException
  *

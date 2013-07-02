@@ -43,7 +43,7 @@ class ServicesGenerator extends Generator
         if ( is_file($yamlFile) ) {
             $config = Yaml::parse($yamlFile);
         } else {
-            $config = array();            
+            $config = array();
         }
 
         $config['parameters'][$bundleNameCamelized.'.'.strtolower($entityName).'_manager.class'] = $namespace.'\\Manager\\'.$entityName.'Manager';
@@ -52,7 +52,7 @@ class ServicesGenerator extends Generator
             'arguments' => array('@service_container')
         );
         $config['services'][$bundleNameCamelized.'.'.strtolower($entityName).'_manager'] = $managerService;
-        
+
         $adminServices = array(
             'class' => $namespace.'\\Admin\\'.$entityName.'Admin',
             'tags' => array(
@@ -90,7 +90,6 @@ class ServicesGenerator extends Generator
             }
         }
         $config['services'][$bundleNameCamelized.'.admin.'.strtolower($entityName)] = $adminServices;
-
 
         $out = Yaml::dump($config, 4);
         if ( file_put_contents($yamlFile, $out) !== false ) {

@@ -23,7 +23,7 @@ use Sensio\Bundle\GeneratorBundle\Manipulator\RoutingManipulator;
 
 /**
  * GenerateCrudCommand
- * 
+ *
  * @category VinceT
  * @package  VinceTBaseBundle
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
@@ -38,7 +38,7 @@ class GenerateCrudCommand extends GenerateDoctrineCommand
 
     /**
      * configure
-     * 
+     *
      * @see Command
      *
      * @return null
@@ -69,7 +69,6 @@ EOT
             )
             ->setName('vincet:generate:crud');
     }
-
 
     /**
      * execute command

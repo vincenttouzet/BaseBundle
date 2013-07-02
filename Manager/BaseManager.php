@@ -86,7 +86,7 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
             $entityManager = $this->getEntityManager($object);
             $this->preCreate($object);
             $entityManager->persist($object);
-            if ( $flush ) {
+            if ($flush) {
                 $entityManager->flush();
             }
             $this->postCreate($object);
@@ -102,7 +102,7 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
      *
      * @return null
      */
-    public function preCreate($object) 
+    public function preCreate($object)
     {
 
     }
@@ -134,7 +134,7 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
             $entityManager = $this->getEntityManager($object);
             $this->preUpdate($object);
             $entityManager->persist($object);
-            if ( $flush ) {
+            if ($flush) {
                 $entityManager->flush();
             }
             $this->postUpdate($object);
@@ -182,7 +182,7 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
             $entityManager = $this->getEntityManager($object);
             $this->preDelete($object);
             $entityManager->remove($object);
-            if ( $flush ) {
+            if ($flush) {
                 $entityManager->flush();
             }
             $this->postDelete($object);
@@ -227,9 +227,9 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     public function getBatchObjects($class, ProxyQueryInterface $queryProxy)
     {
         $queryProxy->select('DISTINCT '.$queryProxy->getRootAlias());
+
         return $queryProxy->getQuery()->execute();
     }
-
 
     /**
      * Override of Sonata\DoctrineORMAdminBundle\Model\ModelManager::batchDelete
@@ -261,6 +261,7 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
             $manager_class = get_class($this);
             $name = str_replace(array('\\Manager\\', 'Manager', '\\'), array(':', '', ''), $manager_class);
         }
+
         return $this->container->get('doctrine.orm.entity_manager')->getRepository($name);
     }
 

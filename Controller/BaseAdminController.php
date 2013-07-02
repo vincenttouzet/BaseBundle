@@ -36,7 +36,7 @@ class BaseAdminController extends CRUDController
      */
     public function createAction()
     {
-        try{
+        try {
             return parent::createAction();
         } catch ( \Exception $e ) {
             return $this->createActionException($e);
@@ -53,6 +53,7 @@ class BaseAdminController extends CRUDController
     protected function createActionException(\Exception $e)
     {
         $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
+
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
 
@@ -66,7 +67,7 @@ class BaseAdminController extends CRUDController
      */
     public function editAction($id = null)
     {
-        try{
+        try {
             return parent::editAction($id);
         } catch ( \Exception $e ) {
             return $this->editActionException($e);
@@ -85,6 +86,7 @@ class BaseAdminController extends CRUDController
         $id = $this->get('request')->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
         $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
+
         return $this->redirectTo($object);
     }
 
@@ -98,7 +100,7 @@ class BaseAdminController extends CRUDController
      */
     public function deleteAction($id)
     {
-        try{
+        try {
             return parent::deleteAction($id);
         } catch ( \Exception $e ) {
             return $this->deleteActionException($e);
@@ -115,6 +117,7 @@ class BaseAdminController extends CRUDController
     protected function deleteActionException(\Exception $e)
     {
         $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
+
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
 
@@ -129,7 +132,7 @@ class BaseAdminController extends CRUDController
      */
     public function batchActionDelete(ProxyQueryInterface $query)
     {
-        try{
+        try {
             return parent::batchActionDelete($query);
         } catch ( \Exception $e ) {
             return $this->batchActionDeleteException($e);
@@ -146,6 +149,7 @@ class BaseAdminController extends CRUDController
     protected function batchActionDeleteException(\Exception $e)
     {
         $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
+
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
 }

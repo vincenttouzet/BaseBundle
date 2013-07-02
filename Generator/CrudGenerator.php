@@ -11,7 +11,6 @@
 
 namespace VinceT\BaseBundle\Generator;
 
-use Sensio\Bundle\GeneratorBundle\Generator\DoctrineCrudGenerator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -106,7 +105,7 @@ class CrudGenerator extends Generator
      * Sets the configuration format.
      *
      * @param string $format The configuration format
-     * 
+     *
      * @return null
      */
     protected function setFormat($format)
@@ -143,8 +142,8 @@ class CrudGenerator extends Generator
         );
 
         $this->renderFile(
-            'config/routing.'.$this->format, 
-            $target, 
+            'config/routing.'.$this->format,
+            $target,
             array(
                 'actions'           => $this->actions,
                 'route_prefix'      => $this->routePrefix,
@@ -180,8 +179,8 @@ class CrudGenerator extends Generator
         }
 
         $this->renderFile(
-            'controller.php', 
-            $target, 
+            'controller.php',
+            $target,
             array(
                 'actions'           => $this->actions,
                 'route_prefix'      => $this->routePrefix,
@@ -212,8 +211,8 @@ class CrudGenerator extends Generator
         $target = $dir .'/'. str_replace('\\', '/', $entityNamespace).'/'. $entityClass .'ControllerTest.php';
 
         $this->renderFile(
-            'tests/test.php', 
-            $target, 
+            'tests/test.php',
+            $target,
             array(
                 'route_prefix'      => $this->routePrefix,
                 'route_name_prefix' => $this->routeNamePrefix,
@@ -232,7 +231,7 @@ class CrudGenerator extends Generator
      * Generates the index.html.twig template in the final bundle.
      *
      * @param string $dir The path to the folder that hosts templates in the bundle
-     * 
+     *
      * @return null
      */
     protected function generateIndexView($dir)
@@ -241,8 +240,8 @@ class CrudGenerator extends Generator
         $entityClass = array_pop($parts);
 
         $this->renderFile(
-            'views/index.html.twig', 
-            $dir.'/index.html.twig', 
+            'views/index.html.twig',
+            $dir.'/index.html.twig',
             array(
                 'dir'               => $this->skeletonDir,
                 'entity'            => $this->entity,
@@ -261,7 +260,7 @@ class CrudGenerator extends Generator
      * Generates the show.html.twig template in the final bundle.
      *
      * @param string $dir The path to the folder that hosts templates in the bundle
-     * 
+     *
      * @return null
      */
     protected function generateShowView($dir)
@@ -270,8 +269,8 @@ class CrudGenerator extends Generator
         $entityClass = array_pop($parts);
 
         $this->renderFile(
-            'views/show.html.twig', 
-            $dir.'/show.html.twig', 
+            'views/show.html.twig',
+            $dir.'/show.html.twig',
             array(
                 'dir'               => $this->skeletonDir,
                 'entity'            => $this->entity,
@@ -289,7 +288,7 @@ class CrudGenerator extends Generator
      * Generates the edit.html.twig template in the final bundle.
      *
      * @param string $dir The path to the folder that hosts templates in the bundle
-     * 
+     *
      * @return null
      */
     protected function generateEditView($dir)
@@ -298,8 +297,8 @@ class CrudGenerator extends Generator
         $entityClass = array_pop($parts);
 
         $this->renderFile(
-            'views/edit.html.twig', 
-            $dir.'/edit.html.twig', 
+            'views/edit.html.twig',
+            $dir.'/edit.html.twig',
             array(
                 'dir'               => $this->skeletonDir,
                 'route_prefix'      => $this->routePrefix,
@@ -320,7 +319,7 @@ class CrudGenerator extends Generator
     protected function getRecordActions()
     {
         return array_filter(
-            $this->actions, 
+            $this->actions,
             function ($item) {
                 return in_array($item, array('show', 'edit'));
             }

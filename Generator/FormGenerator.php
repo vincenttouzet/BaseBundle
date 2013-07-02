@@ -70,7 +70,7 @@ class FormGenerator extends Generator
      * @param BundleInterface   $bundle   The bundle in which to create the class
      * @param string            $entity   The entity relative class name
      * @param ClassMetadataInfo $metadata The entity metadata class
-     * 
+     *
      * @return null
      */
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata)
@@ -94,8 +94,8 @@ class FormGenerator extends Generator
         array_pop($parts);
 
         $this->renderFile(
-            'FormType.php', 
-            $this->classPath, 
+            'FormType.php',
+            $this->classPath,
             array(
                 'dir'              => $this->skeletonDir,
                 'fields'           => $this->getFieldsFromMetadata($metadata),
@@ -114,7 +114,7 @@ class FormGenerator extends Generator
      * association fields.
      *
      * @param ClassMetadataInfo $metadata Metadata
-     * 
+     *
      * @return array $fields
      */
     protected function getFieldsFromMetadata(ClassMetadataInfo $metadata)
