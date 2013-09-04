@@ -52,7 +52,7 @@ class BaseAdminController extends CRUDController
      */
     protected function createActionException(\Exception $e)
     {
-        $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
+        $this->get('session')->getFlashBag()->add('sonata_flash_error', $e->getMessage());
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
@@ -85,7 +85,7 @@ class BaseAdminController extends CRUDController
     {
         $id = $this->get('request')->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
-        $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
+        $this->get('session')->getFlashBag()->add('sonata_flash_error', $e->getMessage());
 
         return $this->redirectTo($object);
     }
@@ -116,7 +116,7 @@ class BaseAdminController extends CRUDController
      */
     protected function deleteActionException(\Exception $e)
     {
-        $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
+        $this->get('session')->getFlashBag()->add('sonata_flash_error', $e->getMessage());
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
@@ -148,7 +148,7 @@ class BaseAdminController extends CRUDController
      */
     protected function batchActionDeleteException(\Exception $e)
     {
-        $this->get('session')->setFlash('sonata_flash_error', $e->getMessage());
+        $this->get('session')->getFlashBag()->add('sonata_flash_error', $e->getMessage());
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
