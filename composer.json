@@ -16,5 +16,10 @@
     "autoload": {
         "psr-0": { "VinceT\\BaseBundle": "" }
     },
-    "target-dir": "VinceT/BaseBundle"
+    "target-dir": "VinceT/BaseBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.2.x-dev"
+        }
+    }
 }
