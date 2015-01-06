@@ -12,6 +12,7 @@
 namespace VinceT\BaseBundle\Generator;
 
 use VinceT\BaseBundle\Twig\VinceTBaseExtension;
+use Sensio\Bundle\GeneratorBundle\Generator\Generator as BaseGenerator;
 
 /**
  * Generator base class
@@ -22,7 +23,7 @@ use VinceT\BaseBundle\Twig\VinceTBaseExtension;
  * @license  MIT License view the LICENSE file that was distributed with this source code.
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
-abstract class Generator implements GeneratorInterface
+abstract class Generator extends BaseGenerator implements GeneratorInterface
 {
     protected $skeletonDir = null;
     private $_bundleName = null;
@@ -73,14 +74,14 @@ abstract class Generator implements GeneratorInterface
      */
     protected function renderFile($template, $target, $parameters)
     {
-        if ( is_file($target) ) {
+        if (is_file($target)) {
             return sprintf('<comment>%s already exists</comment>', $target);
         }
         if (!is_dir(dirname($target))) {
             mkdir(dirname($target), 0777, true);
         }
 
-        if ( file_put_contents($target, $this->render($template, $parameters)) !== false ) {
+        if (file_put_contents($target, $this->render($template, $parameters)) !== false) {
             return sprintf('<info>Create %s</info>', $target);
         } else {
 
@@ -164,5 +165,4 @@ abstract class Generator implements GeneratorInterface
 
         return $this;
     }
-
 }

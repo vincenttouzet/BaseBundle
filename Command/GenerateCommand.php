@@ -12,7 +12,7 @@
 namespace VinceT\BaseBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
+use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -100,7 +100,8 @@ EOF
             $name = strtr($input->getArgument('name'), '/', '\\');
 
             if (false !== $pos = strpos($name, ':')) {
-                $name = $this->getContainer()->get('doctrine')->getEntityNamespace(substr($name, 0, $pos)).'\\'.substr($name, $pos + 1);
+                $name = $this->getContainer()->get('doctrine')
+                        ->getAliasNamespace(substr($name, 0, $pos)).'\\'.substr($name, $pos + 1);
             }
 
             if (class_exists($name)) {
@@ -164,13 +165,13 @@ EOF
     /**
      * getDialogHelper
      *
-     * @return \Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper
+     * @return \Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper
      */
     protected function getDialogHelper()
     {
-        $dialog = $this->getHelperSet()->get('dialog');
-        if (!$dialog || get_class($dialog) !== 'Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper') {
-            $this->getHelperSet()->set($dialog = new DialogHelper());
+        $dialog = $this->getHelperSet()->get('question');
+        if (!$dialog || get_class($dialog) !== 'Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper') {
+            $this->getHelperSet()->set($dialog = new QuestionHelper());
         }
 
         return $dialog;

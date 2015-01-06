@@ -15,9 +15,11 @@ use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use VinceT\BaseBundle\Generator\FormGenerator;
 use VinceT\BaseBundle\Generator\CrudGenerator;
-use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
 use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Sensio\Bundle\GeneratorBundle\Manipulator\RoutingManipulator;
 
@@ -83,7 +85,8 @@ EOT
         $dialog = $this->getDialogHelper();
 
         if ($input->isInteractive()) {
-            if (!$dialog->askConfirmation($output, $dialog->getQuestion('Do you confirm generation', 'yes', '?'), true)) {
+            $question = new ConfirmationQuestion($dialog->getQuestion('Do you confirm generation', 'yes', '?'), true);
+            if (!$dialog->ask($input, $output, $question)) {
                 $output->writeln('<error>Command aborted</error>');
 
                 return 1;
@@ -99,7 +102,7 @@ EOT
 
         $dialog->writeSection($output, 'CRUD generation');
 
-        $entityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($bundle).'\\'.$entity;
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
         $metadata    = $this->getEntityMetadata($entityClass);
         $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
 
@@ -153,37 +156,53 @@ EOT
             )
         );
 
-        $entity = $dialog->askAndValidate($output, $dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'), false, $input->getOption('entity'));
+        $question = new Question(
+            $dialog->getQuestion('The Entity shortcut name', $input->getOption('entity')),
+            $input->getOption('entity')
+        );
+        $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateEntityName'));
+        $entity = $dialog->ask($input, $output, $question);
         $input->setOption('entity', $entity);
         list($bundle, $entity) = $this->parseShortcutNotation($entity);
 
         // Entity exists?
-        $entityClass = $this->getContainer()->get('doctrine')->getEntityNamespace($bundle).'\\'.$entity;
+        $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
         $metadata = $this->getEntityMetadata($entityClass);
 
         // write?
         $withWrite = $input->getOption('with-write') ?: false;
-        $output->writeln(
-            array(
-                '',
-                'By default, the generator creates two actions: list and show.',
-                'You can also ask it to generate "write" actions: new, update, and delete.',
-                '',
-            )
+        $output->writeln(array(
+            '',
+            'By default, the generator creates two actions: list and show.',
+            'You can also ask it to generate "write" actions: new, update, and delete.',
+            '',
+        ));
+        $question = new ConfirmationQuestion(
+            $dialog->getQuestion(
+                'Do you want to generate the "write" actions',
+                $withWrite ? 'yes' : 'no',
+                '?',
+                $withWrite
+            ),
+            $withWrite
         );
-        $withWrite = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want to generate the "write" actions', $withWrite ? 'yes' : 'no', '?'), $withWrite);
+
+        $withWrite = $dialog->ask($input, $output, $question);
         $input->setOption('with-write', $withWrite);
 
         // format
         $format = $input->getOption('format');
-        $output->writeln(
-            array(
-                '',
-                'Determine the format to use for the generated CRUD.',
-                '',
-            )
+        $output->writeln(array(
+            '',
+            'Determine the format to use for the generated CRUD.',
+            '',
+        ));
+        $question = new Question(
+            $dialog->getQuestion('Configuration format (yml, xml, php, or annotation)', $format),
+            $format
         );
-        $format = $dialog->askAndValidate($output, $dialog->getQuestion('Configuration format (yml, xml, php, or annotation)', $format), array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'), false, $format);
+        $question->setValidator(array('Sensio\Bundle\GeneratorBundle\Command\Validators', 'validateFormat'));
+        $format = $dialog->ask($input, $output, $question);
         $input->setOption('format', $format);
 
         // route prefix
@@ -196,7 +215,11 @@ EOT
                 '',
             )
         );
-        $prefix = $dialog->ask($output, $dialog->getQuestion('Routes prefix', '/'.$prefix), '/'.$prefix);
+        $prefix = $dialog->ask(
+            $input,
+            $output,
+            new Question($dialog->getQuestion('Routes prefix', '/'.$prefix), '/'.$prefix)
+        );
         $input->setOption('route-prefix', $prefix);
 
         // summary
@@ -247,7 +270,8 @@ EOT
     {
         $auto = true;
         if ($input->isInteractive()) {
-            $auto = $dialog->askConfirmation($output, $dialog->getQuestion('Confirm automatic update of the Routing', 'yes', '?'), true);
+            $question = new ConfirmationQuestion($dialog->getQuestion('Confirm automatic update of the Routing', 'yes', '?'), true);
+            $auto = $dialog->ask($input, $output, $question);
         }
 
         $output->write('Importing the CRUD routes: ');
@@ -294,32 +318,6 @@ EOT
     }
 
     /**
-     * [getGenerator description]
-     *
-     * @return CrudGenerator
-     */
-    protected function getGenerator()
-    {
-        if (null === $this->generator) {
-            $this->generator = new CrudGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeletons/crud');
-        }
-
-        return $this->generator;
-    }
-
-    /**
-     * [setGenerator description]
-     *
-     * @param CrudGenerator $generator [description]
-     *
-     * @return null
-     */
-    public function setGenerator(CrudGenerator $generator)
-    {
-        $this->generator = $generator;
-    }
-
-    /**
      * [getFormGenerator description]
      *
      * @return FormGenerator
@@ -346,17 +344,20 @@ EOT
     }
 
     /**
-     * [getDialogHelper description]
-     *
-     * @return [type]
+     * @return QuestionHelper
      */
     protected function getDialogHelper()
     {
-        $dialog = $this->getHelperSet()->get('dialog');
-        if (!$dialog || get_class($dialog) !== 'Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper') {
-            $this->getHelperSet()->set($dialog = new DialogHelper());
+        $dialog = $this->getHelperSet()->get('question');
+        if (!$dialog || get_class($dialog) !== 'Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper') {
+            $this->getHelperSet()->set($dialog = new QuestionHelper());
         }
 
         return $dialog;
+    }
+
+    protected function createGenerator()
+    {
+        return new CrudGenerator($this->getContainer()->get('filesystem'), __DIR__.'/../Resources/skeletons/crud');
     }
 }
