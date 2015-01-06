@@ -5,6 +5,21 @@ This bundle define base class to improve your development.
 
 It requires SonataAdminBundle and SonataDoctrineORMAdminBundle
 
+Installation
+------------
+
+Use composer to install
+
+```
+composer require vincet/base-bundle
+```
+
+For symfony <2.5 use the 2.2 version
+
+```
+composer require vincet/base-bundle=2.2
+```
+
 Entity Management
 -----------------
 
