@@ -29,6 +29,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class BaseManager extends ModelManager implements ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
     protected $container = null;
 
     /**
