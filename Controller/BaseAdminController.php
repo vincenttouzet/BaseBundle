@@ -16,6 +16,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * This file is part of VinceTBaseBundle for Symfony2
@@ -52,10 +53,7 @@ class BaseAdminController extends CRUDController
      */
     protected function createActionException(\Exception $e)
     {
-        if ($this->get('kernel')->isDebug()) {
-            throw $e;
-        }
-        $this->get('session')->getFlashBag()->add('sonata_flash_error', $e->getMessage());
+        $this->handleException($e);
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
@@ -86,12 +84,9 @@ class BaseAdminController extends CRUDController
      */
     protected function editActionException(\Exception $e)
     {
-        if ($this->get('kernel')->isDebug()) {
-            throw $e;
-        }
+        $this->handleException($e);
         $id = $this->get('request')->get($this->admin->getIdParameter());
         $object = $this->admin->getObject($id);
-        $this->get('session')->getFlashBag()->add('sonata_flash_error', $e->getMessage());
 
         return $this->redirectTo($object);
     }
@@ -122,10 +117,7 @@ class BaseAdminController extends CRUDController
      */
     protected function deleteActionException(\Exception $e)
     {
-        if ($this->get('kernel')->isDebug()) {
-            throw $e;
-        }
-        $this->get('session')->getFlashBag()->add('sonata_flash_error', $e->getMessage());
+        $this->handleException($e);
 
         return new RedirectResponse($this->admin->generateUrl('list'));
     }
@@ -157,11 +149,21 @@ class BaseAdminController extends CRUDController
      */
     protected function batchActionDeleteException(\Exception $e)
     {
-        if ($this->get('kernel')->isDebug()) {
-            throw $e;
-        }
-        $this->get('session')->getFlashBag()->add('sonata_flash_error', $e->getMessage());
+        $this->handleException($e);
 
         return new RedirectResponse($this->admin->generateUrl('list'));
+    }
+
+    /**
+     * @param \Exception $exception
+     */
+    protected function handleException(\Exception $exception)
+    {
+        if ($this->get('kernel')->isDebug()
+            || $exception instanceof AccessDeniedException
+        ) {
+            throw $exception;
+        }
+        $this->get('session')->getFlashBag()->add('sonata_flash_error', $exception->getMessage());
     }
 }
