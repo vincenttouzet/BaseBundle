@@ -1,11 +1,13 @@
 <?php
+
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 
@@ -16,12 +18,13 @@ use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
- * Crud generator
+ * Crud generator.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 class CrudGenerator extends Generator
@@ -43,7 +46,7 @@ class CrudGenerator extends Generator
      */
     public function __construct(Filesystem $filesystem, $skeletonDir)
     {
-        $this->filesystem  = $filesystem;
+        $this->filesystem = $filesystem;
         $this->setSkeletonDir($skeletonDir);
     }
 
@@ -58,7 +61,6 @@ class CrudGenerator extends Generator
      * @param array             $needWriteActions Wether or not to generate write actions
      *
      * @throws \RuntimeException
-     * @return null
      */
     public function generate($bundle, $entity, ClassMetadataInfo $metadata, $format, $routePrefix, $needWriteActions)
     {
@@ -74,8 +76,8 @@ class CrudGenerator extends Generator
             throw new \RuntimeException('The CRUD generator expects the entity object has a primary key field named "id" with a getId() method.');
         }
 
-        $this->entity   = $entity;
-        $this->bundle   = $bundle;
+        $this->entity = $entity;
+        $this->bundle = $bundle;
         $this->metadata = $metadata;
         $this->setFormat($format);
 
@@ -105,8 +107,6 @@ class CrudGenerator extends Generator
      * Sets the configuration format.
      *
      * @param string $format The configuration format
-     *
-     * @return null
      */
     protected function setFormat($format)
     {
@@ -125,8 +125,6 @@ class CrudGenerator extends Generator
 
     /**
      * Generates the routing configuration.
-     *
-     * @return null
      */
     protected function generateConfiguration()
     {
@@ -145,19 +143,17 @@ class CrudGenerator extends Generator
             'config/routing.'.$this->format,
             $target,
             array(
-                'actions'           => $this->actions,
-                'route_prefix'      => $this->routePrefix,
+                'actions' => $this->actions,
+                'route_prefix' => $this->routePrefix,
                 'route_name_prefix' => $this->routeNamePrefix,
-                'bundle'            => $this->bundle->getName(),
-                'entity'            => $this->entity,
+                'bundle' => $this->bundle->getName(),
+                'entity' => $this->entity,
             )
         );
     }
 
     /**
      * Generates the controller class only.
-     *
-     * @return null
      */
     protected function generateControllerClass()
     {
@@ -182,24 +178,22 @@ class CrudGenerator extends Generator
             'controller.php',
             $target,
             array(
-                'actions'           => $this->actions,
-                'route_prefix'      => $this->routePrefix,
+                'actions' => $this->actions,
+                'route_prefix' => $this->routePrefix,
                 'route_name_prefix' => $this->routeNamePrefix,
-                'dir'               => $this->skeletonDir,
-                'bundle'            => $this->bundle->getName(),
-                'entity'            => $this->entity,
-                'entity_class'      => $entityClass,
-                'namespace'         => $this->bundle->getNamespace(),
-                'entity_namespace'  => $entityNamespace,
-                'format'            => $this->format,
+                'dir' => $this->skeletonDir,
+                'bundle' => $this->bundle->getName(),
+                'entity' => $this->entity,
+                'entity_class' => $entityClass,
+                'namespace' => $this->bundle->getNamespace(),
+                'entity_namespace' => $entityNamespace,
+                'format' => $this->format,
             )
         );
     }
 
     /**
      * Generates the functional test class only.
-     *
-     * @return null
      */
     protected function generateTestClass()
     {
@@ -207,22 +201,22 @@ class CrudGenerator extends Generator
         $entityClass = array_pop($parts);
         $entityNamespace = implode('\\', $parts);
 
-        $dir    = $this->bundle->getPath() .'/Tests/Controller';
-        $target = $dir .'/'. str_replace('\\', '/', $entityNamespace).'/'. $entityClass .'ControllerTest.php';
+        $dir = $this->bundle->getPath().'/Tests/Controller';
+        $target = $dir.'/'.str_replace('\\', '/', $entityNamespace).'/'.$entityClass.'ControllerTest.php';
 
         $this->renderFile(
             'tests/test.php',
             $target,
             array(
-                'route_prefix'      => $this->routePrefix,
+                'route_prefix' => $this->routePrefix,
                 'route_name_prefix' => $this->routeNamePrefix,
-                'entity'            => $this->entity,
-                'entity_class'      => $entityClass,
-                'namespace'         => $this->bundle->getNamespace(),
-                'entity_namespace'  => $entityNamespace,
-                'actions'           => $this->actions,
-                'form_type_name'    => strtolower(str_replace('\\', '_', $this->bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$entityClass.'Type'),
-                'dir'               => $this->skeletonDir,
+                'entity' => $this->entity,
+                'entity_class' => $entityClass,
+                'namespace' => $this->bundle->getNamespace(),
+                'entity_namespace' => $entityNamespace,
+                'actions' => $this->actions,
+                'form_type_name' => strtolower(str_replace('\\', '_', $this->bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$entityClass.'Type'),
+                'dir' => $this->skeletonDir,
             )
         );
     }
@@ -231,8 +225,6 @@ class CrudGenerator extends Generator
      * Generates the index.html.twig template in the final bundle.
      *
      * @param string $dir The path to the folder that hosts templates in the bundle
-     *
-     * @return null
      */
     protected function generateIndexView($dir)
     {
@@ -243,15 +235,15 @@ class CrudGenerator extends Generator
             'views/index.html.twig',
             $dir.'/index.html.twig',
             array(
-                'dir'               => $this->skeletonDir,
-                'entity'            => $this->entity,
-                'fields'            => $this->metadata->fieldMappings,
-                'actions'           => $this->actions,
-                'record_actions'    => $this->getRecordActions(),
-                'route_prefix'      => $this->routePrefix,
+                'dir' => $this->skeletonDir,
+                'entity' => $this->entity,
+                'fields' => $this->metadata->fieldMappings,
+                'actions' => $this->actions,
+                'record_actions' => $this->getRecordActions(),
+                'route_prefix' => $this->routePrefix,
                 'route_name_prefix' => $this->routeNamePrefix,
-                'bundle'            => $this->bundle->getName(),
-                'entity_class'      => $entityClass,
+                'bundle' => $this->bundle->getName(),
+                'entity_class' => $entityClass,
             )
         );
     }
@@ -260,8 +252,6 @@ class CrudGenerator extends Generator
      * Generates the show.html.twig template in the final bundle.
      *
      * @param string $dir The path to the folder that hosts templates in the bundle
-     *
-     * @return null
      */
     protected function generateShowView($dir)
     {
@@ -272,14 +262,14 @@ class CrudGenerator extends Generator
             'views/show.html.twig',
             $dir.'/show.html.twig',
             array(
-                'dir'               => $this->skeletonDir,
-                'entity'            => $this->entity,
-                'fields'            => $this->metadata->fieldMappings,
-                'actions'           => $this->actions,
-                'route_prefix'      => $this->routePrefix,
+                'dir' => $this->skeletonDir,
+                'entity' => $this->entity,
+                'fields' => $this->metadata->fieldMappings,
+                'actions' => $this->actions,
+                'route_prefix' => $this->routePrefix,
                 'route_name_prefix' => $this->routeNamePrefix,
-                'bundle'            => $this->bundle->getName(),
-                'entity_class'      => $entityClass,
+                'bundle' => $this->bundle->getName(),
+                'entity_class' => $entityClass,
             )
         );
     }
@@ -288,8 +278,6 @@ class CrudGenerator extends Generator
      * Generates the edit.html.twig template in the final bundle.
      *
      * @param string $dir The path to the folder that hosts templates in the bundle
-     *
-     * @return null
      */
     protected function generateEditView($dir)
     {
@@ -300,13 +288,13 @@ class CrudGenerator extends Generator
             'views/edit.html.twig',
             $dir.'/edit.html.twig',
             array(
-                'dir'               => $this->skeletonDir,
-                'route_prefix'      => $this->routePrefix,
+                'dir' => $this->skeletonDir,
+                'route_prefix' => $this->routePrefix,
                 'route_name_prefix' => $this->routeNamePrefix,
-                'entity'            => $this->entity,
-                'actions'           => $this->actions,
-                'bundle'            => $this->bundle->getName(),
-                'entity_class'      => $entityClass,
+                'entity' => $this->entity,
+                'actions' => $this->actions,
+                'bundle' => $this->bundle->getName(),
+                'entity_class' => $entityClass,
             )
         );
     }

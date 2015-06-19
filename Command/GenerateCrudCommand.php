@@ -1,11 +1,13 @@
 <?php
+
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 
@@ -24,12 +26,13 @@ use Sensio\Bundle\GeneratorBundle\Command\Validators;
 use Sensio\Bundle\GeneratorBundle\Manipulator\RoutingManipulator;
 
 /**
- * GenerateCrudCommand
+ * GenerateCrudCommand.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  * @see      \Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand
  */
@@ -39,11 +42,9 @@ class GenerateCrudCommand extends GenerateDoctrineCommand
     protected $formGenerator;
 
     /**
-     * configure
+     * configure.
      *
      * @see Command
-     *
-     * @return null
      */
     protected function configure()
     {
@@ -73,12 +74,10 @@ EOT
     }
 
     /**
-     * execute command
+     * execute command.
      *
      * @param InputInterface  $input  InputInterface instance
      * @param OutputInterface $output OutputInterface instance
-     *
-     * @return null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -103,8 +102,8 @@ EOT
         $dialog->writeSection($output, 'CRUD generation');
 
         $entityClass = $this->getContainer()->get('doctrine')->getAliasNamespace($bundle).'\\'.$entity;
-        $metadata    = $this->getEntityMetadata($entityClass);
-        $bundle      = $this->getContainer()->get('kernel')->getBundle($bundle);
+        $metadata = $this->getEntityMetadata($entityClass);
+        $bundle = $this->getContainer()->get('kernel')->getBundle($bundle);
 
         $generator = $this->getGenerator();
         $generator->generate($bundle, $entity, $metadata[0], $format, $prefix, $withWrite);
@@ -129,12 +128,10 @@ EOT
     }
 
     /**
-     * command interaction
+     * command interaction.
      *
      * @param InputInterface  $input  InputInterface instance
      * @param OutputInterface $output OutputInterface instance
-     *
-     * @return null
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
@@ -228,33 +225,31 @@ EOT
                 '',
                 $this->getHelper('formatter')->formatBlock('Summary before generation', 'bg=blue;fg=white', true),
                 '',
-                sprintf("You are going to generate a CRUD controller for \"<info>%s:%s</info>\"", $bundle, $entity),
-                sprintf("using the \"<info>%s</info>\" format.", $format),
+                sprintf('You are going to generate a CRUD controller for "<info>%s:%s</info>"', $bundle, $entity),
+                sprintf('using the "<info>%s</info>" format.', $format),
                 '',
             )
         );
     }
 
     /**
-     * [generateForm description]
+     * [generateForm description].
      *
      * @param [type] $bundle   [description]
      * @param [type] $entity   [description]
      * @param [type] $metadata [description]
-     *
-     * @return null
      */
     protected function generateForm($bundle, $entity, $metadata)
     {
         try {
             $this->getFormGenerator()->generate($bundle, $entity, $metadata[0]);
-        } catch (\RuntimeException $e ) {
+        } catch (\RuntimeException $e) {
             // form already exists
         }
     }
 
     /**
-     * [updateRouting description]
+     * [updateRouting description].
      *
      * @param [type]          $dialog [description]
      * @param InputInterface  $input  [description]
@@ -299,7 +294,7 @@ EOT
     }
 
     /**
-     * [getRoutePrefix description]
+     * [getRoutePrefix description].
      *
      * @param InputInterface $input  [description]
      * @param [type]         $entity [description]
@@ -318,7 +313,7 @@ EOT
     }
 
     /**
-     * [getFormGenerator description]
+     * [getFormGenerator description].
      *
      * @return FormGenerator
      */
@@ -332,11 +327,9 @@ EOT
     }
 
     /**
-     * [setFormGenerator description]
+     * [setFormGenerator description].
      *
      * @param FormGenerator $formGenerator [description]
-     *
-     * @return null
      */
     public function setFormGenerator(FormGenerator $formGenerator)
     {

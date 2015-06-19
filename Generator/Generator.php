@@ -1,11 +1,13 @@
 <?php
+
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 
@@ -15,12 +17,13 @@ use VinceT\BaseBundle\Twig\VinceTBaseExtension;
 use Sensio\Bundle\GeneratorBundle\Generator\Generator as BaseGenerator;
 
 /**
- * Generator base class
+ * Generator base class.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 abstract class Generator extends BaseGenerator implements GeneratorInterface
@@ -29,7 +32,7 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
     private $_bundleName = null;
 
     /**
-     * __construct
+     * __construct.
      *
      * @param string $bundleName Name of the bundle to make generation
      */
@@ -40,7 +43,7 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
     }
 
     /**
-     * render a twig template
+     * render a twig template.
      *
      * @param string $template   Template filename
      * @param array  $parameters Twig parameters
@@ -52,10 +55,10 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
         $twig = new \Twig_Environment(
             new \Twig_Loader_Filesystem($this->getSkeletonDir()),
             array(
-                'debug'            => true,
-                'cache'            => false,
+                'debug' => true,
+                'cache' => false,
                 'strict_variables' => true,
-                'autoescape'       => false,
+                'autoescape' => false,
             )
         );
         $twig->addExtension(new VinceTBaseExtension());
@@ -64,7 +67,7 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
     }
 
     /**
-     * render a file
+     * render a file.
      *
      * @param string $template   Template filename
      * @param string $target     Output filename
@@ -84,12 +87,11 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
         if (file_put_contents($target, $this->render($template, $parameters)) !== false) {
             return sprintf('<info>Create %s</info>', $target);
         } else {
-
         }
     }
 
     /**
-     * Get entity name
+     * Get entity name.
      *
      * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata [description]
      *
@@ -99,11 +101,11 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
     {
         $name_explode = explode('\\', $metadata->name);
 
-        return $name_explode[count($name_explode)-1];
+        return $name_explode[count($name_explode) - 1];
     }
 
     /**
-     * Camelize a string
+     * Camelize a string.
      *
      * @param string $string [description]
      *
@@ -119,7 +121,7 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
     }
 
     /**
-     * getBundleName
+     * getBundleName.
      *
      * @return string
      */
@@ -129,7 +131,7 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
     }
 
     /**
-     * setBundleName
+     * setBundleName.
      *
      * @param string $bundleName Name of the bundle to make generation
      *
@@ -143,7 +145,7 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
     }
 
     /**
-     * getSkeletonDir
+     * getSkeletonDir.
      *
      * @return string
      */
@@ -153,7 +155,7 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
     }
 
     /**
-     * setSkeletonDir
+     * setSkeletonDir.
      *
      * @param string $skeletonDir Path to skeletons files
      *

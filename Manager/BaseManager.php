@@ -1,11 +1,13 @@
 <?php
+
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 
@@ -14,17 +16,17 @@ namespace VinceT\BaseBundle\Manager;
 use Sonata\DoctrineORMAdminBundle\Model\ModelManager;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 class BaseManager extends ModelManager implements ContainerAwareInterface
@@ -35,7 +37,7 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     protected $container = null;
 
     /**
-     * __construct
+     * __construct.
      *
      * @param ContainerInterface $container A ContainerInterface instance
      */
@@ -49,8 +51,6 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
      * Sets the Container.
      *
      * @param ContainerInterface $container A ContainerInterface instance
-     *
-     * @return null
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -58,16 +58,14 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     }
 
     /**
-     * Persist an object into database
+     * Persist an object into database.
      *
-     * @param Object  $object Object
-     * @param boolean $flush  Flush entity manager
-     *
-     * @return null
+     * @param Object $object Object
+     * @param bool   $flush  Flush entity manager
      */
     public function persist($object, $flush = true)
     {
-        if ( $object->getId() ) {
+        if ($object->getId()) {
             $this->update($object, $flush);
         } else {
             $this->create($object, $flush);
@@ -75,13 +73,12 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     }
 
     /**
-     * create new entity in database
+     * create new entity in database.
      *
      * @param Object  $object Object
      * @param Boolean $flush  Flush entity manager
      *
      * @see Sonata\DoctrineORMAdminBundle\Model\ModelManager::create()
-     * @return null
      */
     public function create($object, $flush = true)
     {
@@ -99,37 +96,30 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     }
 
     /**
-     * process before create new entity in database
+     * process before create new entity in database.
      *
      * @param Object $object Object
-     *
-     * @return null
      */
     public function preCreate($object)
     {
-
     }
 
     /**
-     * process after create new entity in database
+     * process after create new entity in database.
      *
      * @param Object $object Object
-     *
-     * @return null
      */
     public function postCreate($object)
     {
-
     }
 
     /**
-     * update an object into database
+     * update an object into database.
      *
      * @param Object  $object Object
      * @param Boolean $flush  Flush entity manager
      *
      * @see Sonata\DoctrineORMAdminBundle\Model\ModelManager::update()
-     * @return null
      */
     public function update($object, $flush = true)
     {
@@ -147,37 +137,30 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     }
 
     /**
-     * process before update an object into database
+     * process before update an object into database.
      *
      * @param Object $object Object
-     *
-     * @return null
      */
     public function preUpdate($object)
     {
-
     }
 
     /**
-     * process after update an object into database
+     * process after update an object into database.
      *
      * @param Object $object Object
-     *
-     * @return null
      */
     public function postUpdate($object)
     {
-
     }
 
     /**
-     * delete an object from database
+     * delete an object from database.
      *
      * @param Object  $object Object
      * @param Boolean $flush  Flush entity manager
      *
      * @see Sonata\DoctrineORMAdminBundle\Model\ModelManager::delete()
-     * @return null
      */
     public function delete($object, $flush = true)
     {
@@ -195,37 +178,30 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     }
 
     /**
-     * process before delete an object from database
+     * process before delete an object from database.
      *
      * @param Object $object Object
-     *
-     * @return null
      */
     public function preDelete($object)
     {
-
     }
 
     /**
-     * process after delete an object from database
+     * process after delete an object from database.
      *
      * @param Object $object Object
-     *
-     * @return null
      */
     public function postDelete($object)
     {
-
     }
 
     /**
-     * Retrieve objects from a batch request
+     * Retrieve objects from a batch request.
      *
      * @param string              $class      Class name
      * @param ProxyQueryInterface $queryProxy ProxyQueryInterface instance
      *
      * @throws \Exception
-     * @return null
      */
     public function getBatchObjects($class, ProxyQueryInterface $queryProxy)
     {
@@ -235,13 +211,12 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     }
 
     /**
-     * Override of Sonata\DoctrineORMAdminBundle\Model\ModelManager::batchDelete
+     * Override of Sonata\DoctrineORMAdminBundle\Model\ModelManager::batchDelete.
      *
      * @param string              $class      class name
      * @param ProxyQueryInterface $queryProxy ProxyQueryInterface instance
      *
      * @throws \Exception
-     * @return null
      */
     public function batchDelete($class, ProxyQueryInterface $queryProxy)
     {
@@ -252,7 +227,7 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
     }
 
     /**
-     * Get a repository
+     * Get a repository.
      *
      * @param string $name Entity shortcut name
      *
@@ -260,7 +235,7 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
      */
     public function getRepository($name = null)
     {
-        if ( is_null($name) || empty($name) ) {
+        if (is_null($name) || empty($name)) {
             $manager_class = get_class($this);
             $name = str_replace(array('\\Manager\\', 'Manager', '\\'), array(':', '', ''), $manager_class);
             $name = str_replace(
@@ -272,5 +247,4 @@ class BaseManager extends ModelManager implements ContainerAwareInterface
 
         return $this->container->get('doctrine.orm.entity_manager')->getRepository($name);
     }
-
 }

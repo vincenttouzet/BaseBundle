@@ -1,29 +1,32 @@
 <?php
+
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 
 namespace VinceT\BaseBundle\Twig;
 
 /**
- * Twig extension
+ * Twig extension.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 class VinceTBaseExtension extends \Twig_Extension
 {
     /**
-     * define filters
+     * define filters.
      *
      * @return array
      */
@@ -37,7 +40,7 @@ class VinceTBaseExtension extends \Twig_Extension
     }
 
     /**
-     * camelize
+     * camelize.
      *
      * @param string $string String to camelize
      *
@@ -53,7 +56,7 @@ class VinceTBaseExtension extends \Twig_Extension
     }
 
     /**
-     * camelize a bundle name
+     * camelize a bundle name.
      *
      * @param string $string Bundle name to camelize
      *
@@ -68,7 +71,7 @@ class VinceTBaseExtension extends \Twig_Extension
     }
 
     /**
-     * Get a vendor name from a bundle namespace
+     * Get a vendor name from a bundle namespace.
      *
      * @param string $namespace Namespace of the vendor's bundle
      *
@@ -82,7 +85,7 @@ class VinceTBaseExtension extends \Twig_Extension
     }
 
     /**
-     * [getName description]
+     * [getName description].
      *
      * @return string
      */

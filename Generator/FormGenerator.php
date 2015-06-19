@@ -1,11 +1,13 @@
 <?php
+
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 
@@ -19,11 +21,12 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
  * Generates a form class based on a Doctrine entity.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Fabien Potencier <fabien@symfony.com>
  * @author   Hugo Hamon <hugo.hamon@sensio.com>
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 class FormGenerator extends Generator
@@ -33,7 +36,7 @@ class FormGenerator extends Generator
     protected $classPath;
 
     /**
-     * [__construct description]
+     * [__construct description].
      *
      * @param Filesystem $filesystem  [description]
      * @param string     $skeletonDir [description]
@@ -45,7 +48,7 @@ class FormGenerator extends Generator
     }
 
     /**
-     * [getClassName description]
+     * [getClassName description].
      *
      * @return string
      */
@@ -55,7 +58,7 @@ class FormGenerator extends Generator
     }
 
     /**
-     * [getClassPath description]
+     * [getClassPath description].
      *
      * @return string
      */
@@ -70,16 +73,14 @@ class FormGenerator extends Generator
      * @param BundleInterface   $bundle   The bundle in which to create the class
      * @param string            $entity   The entity relative class name
      * @param ClassMetadataInfo $metadata The entity metadata class
-     *
-     * @return null
      */
     public function generate(BundleInterface $bundle, $entity, ClassMetadataInfo $metadata)
     {
-        $parts       = explode('\\', $entity);
+        $parts = explode('\\', $entity);
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass.'Type';
-        $dirPath         = $bundle->getPath().'/Form';
+        $dirPath = $bundle->getPath().'/Form';
         $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
 
         if (file_exists($this->classPath)) {
@@ -97,14 +98,14 @@ class FormGenerator extends Generator
             'FormType.php',
             $this->classPath,
             array(
-                'dir'              => $this->skeletonDir,
-                'fields'           => $this->getFieldsFromMetadata($metadata),
-                'namespace'        => $bundle->getNamespace(),
+                'dir' => $this->skeletonDir,
+                'fields' => $this->getFieldsFromMetadata($metadata),
+                'namespace' => $bundle->getNamespace(),
                 'entity_namespace' => implode('\\', $parts),
-                'entity_class'     => $entityClass,
-                'bundle'           => $bundle->getName(),
-                'form_class'       => $this->className,
-                'form_type_name'   => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$this->className),
+                'entity_class' => $entityClass,
+                'bundle' => $bundle->getName(),
+                'form_class' => $this->className,
+                'form_type_name' => strtolower(str_replace('\\', '_', $bundle->getNamespace()).($parts ? '_' : '').implode('_', $parts).'_'.$this->className),
             )
         );
     }

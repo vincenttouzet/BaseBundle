@@ -1,11 +1,13 @@
 <?php
+
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 
@@ -13,39 +15,40 @@ namespace VinceT\BaseBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 class BaseAdminController extends CRUDController
 {
     /**
-     * createAction override from CRUDController
+     * createAction override from CRUDController.
      *
      * @see Sonata\AdminBundle\Controller\CRUDController::create()
+     *
      * @return Response|RedirectResponse
      */
     public function createAction()
     {
         try {
             return parent::createAction();
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             return $this->createActionException($e);
         }
     }
 
     /**
-     * createActionException
+     * createActionException.
      *
      * @param \Exception $e Throwed exception
      *
@@ -59,24 +62,25 @@ class BaseAdminController extends CRUDController
     }
 
     /**
-     * editAction override from CRUDController
+     * editAction override from CRUDController.
      *
-     * @param integer|null $id Object id
+     * @param int|null $id Object id
      *
      * @see Sonata\AdminBundle\Controller\CRUDController::edit()
+     *
      * @return Response|RedirectResponse
      */
     public function editAction($id = null)
     {
         try {
             return parent::editAction($id);
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             return $this->editActionException($e);
         }
     }
 
     /**
-     * editActionException
+     * editActionException.
      *
      * @param \Exception $e Throwed exception
      *
@@ -92,24 +96,25 @@ class BaseAdminController extends CRUDController
     }
 
     /**
-     * deleteAction override from CRUDController
+     * deleteAction override from CRUDController.
      *
-     * @param integer|null $id Object id
+     * @param int|null $id Object id
      *
      * @see Sonata\AdminBundle\Controller\CRUDController::delete()
+     *
      * @return Response|RedirectResponse
      */
     public function deleteAction($id)
     {
         try {
             return parent::deleteAction($id);
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             return $this->deleteActionException($e);
         }
     }
 
     /**
-     * deleteActionException
+     * deleteActionException.
      *
      * @param \Exception $e Throwed exception
      *
@@ -123,7 +128,7 @@ class BaseAdminController extends CRUDController
     }
 
     /**
-     * execute a batch delete
+     * execute a batch delete.
      *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      *
@@ -135,13 +140,13 @@ class BaseAdminController extends CRUDController
     {
         try {
             return parent::batchActionDelete($query);
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             return $this->batchActionDeleteException($e);
         }
     }
 
     /**
-     * batchActionDeleteException
+     * batchActionDeleteException.
      *
      * @param \Exception $e Throwed exception
      *

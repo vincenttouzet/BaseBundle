@@ -10,7 +10,7 @@ class Service implements ContainerAwareInterface
     protected $container = null;
 
     /**
-     * __construct
+     * __construct.
      *
      * @param ContainerInterface $container A ContainerInterface instance
      */
@@ -23,8 +23,6 @@ class Service implements ContainerAwareInterface
      * Sets the Container.
      *
      * @param ContainerInterface $container A ContainerInterface instance
-     *
-     * @return null
      */
     public function setContainer(ContainerInterface $container = null)
     {

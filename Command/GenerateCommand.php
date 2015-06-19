@@ -1,11 +1,13 @@
 <?php
+
 /**
- * This file is part of VinceTBaseBundle for Symfony2
+ * This file is part of VinceTBaseBundle for Symfony2.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 
@@ -24,12 +26,13 @@ use VinceT\BaseBundle\Generator\TranslationsGenerator;
 use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
 
 /**
- * Generate Admin class
+ * Generate Admin class.
  *
  * @category VinceT
- * @package  VinceTBaseBundle
+ *
  * @author   Vincent Touzet <vincent.touzet@gmail.com>
  * @license  MIT License view the LICENSE file that was distributed with this source code.
+ *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
 class GenerateCommand extends ContainerAwareCommand
@@ -39,9 +42,7 @@ class GenerateCommand extends ContainerAwareCommand
     private $_metadatas = null;
 
     /**
-     * configure command
-     *
-     * @return null
+     * configure command.
      */
     protected function configure()
     {
@@ -80,12 +81,10 @@ EOF
     }
 
     /**
-     * execute command
+     * execute command.
      *
      * @param InputInterface  $input  InputInterface instance
      * @param OutputInterface $output OutputInterface instance
-     *
-     * @return null
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -129,7 +128,7 @@ EOF
         $adminControllerGenerator = new AdminControllerGenerator();
         $servicesGenerator = new ServicesGenerator();
         $translationsGenerator = new TranslationsGenerator();
-        foreach ( $this->getMetadatas() as $metadata ) {
+        foreach ($this->getMetadatas() as $metadata) {
             $entityName = $this->getEntityNameFromMetadata($metadata);
             $output->writeln('');
             $output->writeln(sprintf('Generate files for entity %s', $entityName));
@@ -149,12 +148,10 @@ EOF
     }
 
     /**
-     * command interaction
+     * command interaction.
      *
      * @param InputInterface  $input  InputInterface instance
      * @param OutputInterface $output OutputInterface instance
-     *
-     * @return null
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
@@ -163,7 +160,7 @@ EOF
     }
 
     /**
-     * getDialogHelper
+     * getDialogHelper.
      *
      * @return \Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper
      */
@@ -178,7 +175,7 @@ EOF
     }
 
     /**
-     * Get entity name
+     * Get entity name.
      *
      * @param \Doctrine\ORM\Mapping\ClassMetadata $metadata [description]
      *
@@ -188,11 +185,11 @@ EOF
     {
         $name_explode = explode('\\', $metadata->name);
 
-        return $name_explode[count($name_explode)-1];
+        return $name_explode[count($name_explode) - 1];
     }
 
     /**
-     * Get a bundle name from a root entity name (e.g: VinceT\\DemoBundle\\Entity\\Post)
+     * Get a bundle name from a root entity name (e.g: VinceT\\DemoBundle\\Entity\\Post).
      *
      * @param string $rootEntityName Root entity name
      *
@@ -203,12 +200,12 @@ EOF
         $bundles = $this->getContainer()->get('kernel')->getBundles();
         $bundleName = '';
 
-        foreach ($bundles as $type=>$bundle) {
+        foreach ($bundles as $type => $bundle) {
             $className = get_class($bundle);
 
             $entityClass = substr($rootEntityName, 0, strpos($rootEntityName, '\\Entity\\'));
 
-            if ( strpos($className, $entityClass) !== false ) {
+            if (strpos($className, $entityClass) !== false) {
                 $bundleName = $type;
             }
         }
@@ -217,7 +214,7 @@ EOF
     }
 
     /**
-     * getNamespace
+     * getNamespace.
      *
      * @return string
      */
@@ -227,7 +224,7 @@ EOF
     }
 
     /**
-     * getMetadata
+     * getMetadata.
      *
      * @return \Doctrine\Bundle\DoctrineBundle\Mapping\ClassMetadataCollection
      */
@@ -237,7 +234,7 @@ EOF
     }
 
     /**
-     * getBasePath
+     * getBasePath.
      *
      * @return string
      */
@@ -245,5 +242,4 @@ EOF
     {
         return $this->_basePath;
     }
-
 }
