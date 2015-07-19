@@ -43,7 +43,7 @@ class ServicesGenerator extends Generator
         $bundleNameCamelized = str_replace('_bundle', '', $this->camelize($bundleName));
         $entityName = $this->getEntityNameFromMetadata($metadata);
         if (is_file($yamlFile)) {
-            $config = Yaml::parse($yamlFile);
+            $config = Yaml::parse(file_get_contents($yamlFile));
         } else {
             $config = array();
         }

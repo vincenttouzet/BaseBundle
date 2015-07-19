@@ -199,7 +199,7 @@ class TranslationsGenerator extends Generator
     protected function getTrans($filename)
     {
         if (is_file($filename)) {
-            $trans = Yaml::parse($filename);
+            $trans = Yaml::parse(file_get_contents($filename));
         } else {
             $trans = array();
         }
