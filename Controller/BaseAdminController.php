@@ -10,7 +10,6 @@
  *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
-
 namespace VinceT\BaseBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;

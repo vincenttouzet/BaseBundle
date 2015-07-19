@@ -10,7 +10,6 @@
  *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
-
 namespace VinceT\BaseBundle\Generator;
 
 use Symfony\Component\Filesystem\Filesystem;

@@ -10,7 +10,6 @@
  *
  * @link     https://github.com/vincenttouzet/BaseBundle
  */
-
 namespace VinceT\BaseBundle\Command;
 
 use Sensio\Bundle\GeneratorBundle\Command\GenerateDoctrineCommand;
