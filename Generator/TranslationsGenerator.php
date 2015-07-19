@@ -60,12 +60,16 @@ class TranslationsGenerator extends Generator
     protected function generateLangEn($namespace, $basePath, ClassMetadata $metadata)
     {
         $entityName = $this->getEntityNameFromMetadata($metadata);
+        $entityNamePlural = $entityName.'s';
         $entityNameCamelized = $this->camelize($entityName);
         $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().$entityName.'.en.yml';
         $trans = $this->getTrans($yamlFile);
 
         if (!array_key_exists($entityName, $trans)) {
             $trans[$entityName] = $entityName;
+        }
+        if (!array_key_exists($entityNamePlural, $trans)) {
+            $trans[$entityNamePlural] = $entityNamePlural;
         }
 
         if (!array_key_exists('link_'.$entityNameCamelized.'_list', $trans['breadcrumb'])) {
@@ -125,9 +129,17 @@ class TranslationsGenerator extends Generator
     protected function generateLangFr($namespace, $basePath, ClassMetadata $metadata)
     {
         $entityName = $this->getEntityNameFromMetadata($metadata);
+        $entityNamePlural = $entityName.'s';
         $entityNameCamelized = $this->camelize($entityName);
         $yamlFile = $basePath.'/Resources/translations/'.$this->getBundleName().$entityName.'.fr.yml';
         $trans = $this->getTrans($yamlFile);
+
+        if (!array_key_exists($entityName, $trans)) {
+            $trans[$entityName] = $entityName;
+        }
+        if (!array_key_exists($entityNamePlural, $trans)) {
+            $trans[$entityNamePlural] = $entityNamePlural;
+        }
 
         if (!array_key_exists('link_'.$entityNameCamelized.'_list', $trans['breadcrumb'])) {
             $trans['breadcrumb']['link_'.$entityNameCamelized.'_list'] = $entityName.'s';
