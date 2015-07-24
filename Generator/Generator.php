@@ -77,14 +77,14 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
     protected function renderFile($template, $target, $parameters)
     {
         if (is_file($target)) {
-            return sprintf('<comment>%s already exists</comment>', $target);
+            return sprintf('<comment>%s already exists</comment>', $this->getRelativeFilePath($target));
         }
         if (!is_dir(dirname($target))) {
             mkdir(dirname($target), 0777, true);
         }
 
         if (file_put_contents($target, $this->render($template, $parameters)) !== false) {
-            return sprintf('<info>Create %s</info>', $target);
+            return sprintf('<info>Create %s</info>', $this->getRelativeFilePath($target));
         }
 
         return null;
@@ -166,5 +166,10 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
         $this->skeletonDir = $skeletonDir;
 
         return $this;
+    }
+
+    public function getRelativeFilePath($fullPath)
+    {
+        return trim(str_replace(getcwd(), '', $fullPath), '/');
     }
 }

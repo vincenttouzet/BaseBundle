@@ -112,9 +112,9 @@ class TranslationsGenerator extends Generator
 
         $out = Yaml::dump($trans, 4);
         if (file_put_contents($yamlFile, $out) !== false) {
-            return sprintf('<info>Update %s</info>', $yamlFile);
+            return sprintf('<info>Update %s</info>', $this->getRelativeFilePath($yamlFile));
         } else {
-            return sprintf('<error>Unable to update %s</error>', $yamlFile);
+            return sprintf('<error>Unable to update %s</error>', $this->getRelativeFilePath($yamlFile));
         }
     }
 
@@ -182,9 +182,9 @@ class TranslationsGenerator extends Generator
 
         $out = Yaml::dump($trans, 4);
         if (file_put_contents($yamlFile, $out) !== false) {
-            return sprintf('<info>Update %s</info>', $yamlFile);
+            return sprintf('<info>Update %s</info>', $this->getRelativeFilePath($yamlFile));
         } else {
-            return sprintf('<error>Unable to update %s</error>', $yamlFile);
+            return sprintf('<error>Unable to update %s</error>', $this->getRelativeFilePath($yamlFile));
         }
     }
 

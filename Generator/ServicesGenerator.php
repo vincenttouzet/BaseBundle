@@ -71,9 +71,9 @@ class ServicesGenerator extends Generator
 
         $out = Yaml::dump($config, 4);
         if (file_put_contents($yamlFile, $out) !== false) {
-            return sprintf('<info>Update %s</info>', $yamlFile);
+            return sprintf('<info>Update %s</info>', $this->getRelativeFilePath($yamlFile));
         } else {
-            return sprintf('<error>Unable to update %s</error>', $yamlFile);
+            return sprintf('<error>Unable to update %s</error>', $this->getRelativeFilePath($yamlFile));
         }
     }
 
@@ -129,9 +129,9 @@ class ServicesGenerator extends Generator
 
         $out = Yaml::dump($config, 4);
         if (file_put_contents($yamlFile, $out) !== false) {
-            return sprintf('<info>Update %s</info>', $yamlFile);
+            return sprintf('<info>Update %s</info>', $this->getRelativeFilePath($yamlFile));
         } else {
-            return sprintf('<error>Unable to update %s</error>', $yamlFile);
+            return sprintf('<error>Unable to update %s</error>', $this->getRelativeFilePath($yamlFile));
         }
     }
 
@@ -145,7 +145,7 @@ class ServicesGenerator extends Generator
         $loadManagers = !preg_match('/load\([\'\"]managers.yml[\'\"]\)/', $content);
 
         if ($loadAdmins || $loadManagers) {
-            $out[] = sprintf('<error>You must update your bundle\'s extension in %s.</error>', $file);
+            $out[] = sprintf('<error>You must update your bundle\'s extension in %s.</error>', $this->getRelativeFilePath($file));
         }
         if ($loadAdmins) {
             $out[] = sprintf('    <error>-> You must load the admins.yml file.</error>');
