@@ -85,8 +85,9 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
 
         if (file_put_contents($target, $this->render($template, $parameters)) !== false) {
             return sprintf('<info>Create %s</info>', $target);
-        } else {
         }
+
+        return null;
     }
 
     /**

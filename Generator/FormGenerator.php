@@ -94,7 +94,7 @@ class FormGenerator extends Generator
         array_pop($parts);
 
         $this->renderFile(
-            'FormType.php',
+            'FormType.php.twig',
             $this->classPath,
             array(
                 'dir' => $this->skeletonDir,

@@ -36,9 +36,9 @@ use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
  */
 class GenerateCommand extends ContainerAwareCommand
 {
-    private $_namespace = null;
-    private $_basePath = null;
-    private $_metadatas = null;
+    private $namespace = null;
+    private $basePath = null;
+    private $metadatas = null;
 
     /**
      * configure command.
@@ -82,8 +82,9 @@ EOF
     /**
      * execute command.
      *
-     * @param InputInterface  $input  InputInterface instance
+     * @param InputInterface $input InputInterface instance
      * @param OutputInterface $output OutputInterface instance
+     * @return int|null|void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -111,22 +112,22 @@ EOF
             }
         }
 
-        $this->_metadatas = $metadata->getMetadata();
+        $this->metadatas = $metadata->getMetadata();
 
-        $this->_namespace = str_replace('\\Entity', '', $metadata->getNamespace());
+        $this->namespace = str_replace('\\Entity', '', $metadata->getNamespace());
         $path = $metadata->getPath();
 
-        $this->_basePath = sprintf(
+        $this->basePath = sprintf(
             '%s/%s',
             $path,
-            str_replace('\\', '/', $this->_namespace)
+            str_replace('\\', '/', $this->namespace)
         );
 
         $adminGenerator = new AdminGenerator();
         $managerGenerator = new ManagerGenerator();
-        $adminControllerGenerator = new AdminControllerGenerator();
+        $adminCtlGenerator = new AdminControllerGenerator();
         $servicesGenerator = new ServicesGenerator();
-        $translationsGenerator = new TranslationsGenerator();
+        $transGenerator = new TranslationsGenerator();
         foreach ($this->getMetadatas() as $metadata) {
             $entityName = $this->getEntityNameFromMetadata($metadata);
             $output->writeln('');
@@ -136,13 +137,13 @@ EOF
             // generate Manager class
             $output->writeln($managerGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
             // generate AdminController class
-            $output->writeln($adminControllerGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
+            $output->writeln($adminCtlGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
             // update services.yml
             $servicesGenerator->setBundleName($this->getBundleNameFromEntity($metadata->rootEntityName));
             $output->writeln($servicesGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
             // update translations
-            $translationsGenerator->setBundleName($this->getBundleNameFromEntity($metadata->rootEntityName));
-            $output->writeln($translationsGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
+            $transGenerator->setBundleName($this->getBundleNameFromEntity($metadata->rootEntityName));
+            $output->writeln($transGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
         }
     }
 
@@ -219,7 +220,7 @@ EOF
      */
     public function getNamespace()
     {
-        return $this->_namespace;
+        return $this->namespace;
     }
 
     /**
@@ -229,7 +230,7 @@ EOF
      */
     public function getMetadatas()
     {
-        return $this->_metadatas;
+        return $this->metadatas;
     }
 
     /**
@@ -239,6 +240,6 @@ EOF
      */
     public function getBasePath()
     {
-        return $this->_basePath;
+        return $this->basePath;
     }
 }

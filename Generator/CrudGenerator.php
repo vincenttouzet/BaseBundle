@@ -139,7 +139,7 @@ class CrudGenerator extends Generator
         );
 
         $this->renderFile(
-            'config/routing.'.$this->format,
+            'config/routing.'.$this->format.'.twig',
             $target,
             array(
                 'actions' => $this->actions,
@@ -174,7 +174,7 @@ class CrudGenerator extends Generator
         }
 
         $this->renderFile(
-            'controller.php',
+            'controller.php.twig',
             $target,
             array(
                 'actions' => $this->actions,
@@ -204,7 +204,7 @@ class CrudGenerator extends Generator
         $target = $dir.'/'.str_replace('\\', '/', $entityNamespace).'/'.$entityClass.'ControllerTest.php';
 
         $this->renderFile(
-            'tests/test.php',
+            'tests/test.php.twig',
             $target,
             array(
                 'route_prefix' => $this->routePrefix,
