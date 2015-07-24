@@ -48,6 +48,7 @@ class AdminGenerator extends Generator
             'namespace' => $namespace,
             'entityName' => $entityName,
             'metadata' => $metadata,
+            'render_associations' => array(ClassMetadata::MANY_TO_ONE)
         );
 
         return $this->renderFile('admin.php.twig', $fileName, $parameters);

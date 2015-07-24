@@ -13,6 +13,44 @@ class {{ entityName }}Admin extends BaseAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+        {%- for field in metadata.associationMappings %}
+            {%- if field.type in render_associations %}
+
+            ->add('{{ field.fieldName }}')
+
+            {%- endif %}
+        {%- endfor %}
+        {%- for field in metadata.fieldMappings %}
+            {%- if field.fieldName not in metadata.identifier %}
+                {%- if 'boolean' == field.type %}
+
+            ->add('{{ field.fieldName }}', null, array('required' => false))
+
+                {%- else %}
+
+            ->add('{{ field.fieldName }}')
+
+                {%- endif %}
+            {%- endif %}
+        {%- endfor %}
+;
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+        {%- for identifier in metadata.identifier %}
+
+            ->add('{{ identifier }}')
+
+        {%- endfor %}
+        {%- for field in metadata.associationMappings %}
+            {%- if field.type in render_associations %}
+
+            ->add('{{ field.fieldName }}')
+
+            {%- endif %}
+        {%- endfor %}
         {%- for field in metadata.fieldMappings %}
             {%- if field.fieldName not in metadata.identifier %}
 
@@ -23,24 +61,33 @@ class {{ entityName }}Admin extends BaseAdmin
 ;
     }
 
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
-        $datagridMapper
-        {%- for field in metadata.fieldMappings %}
-
-            ->add('{{ field.fieldName }}')
-
-        {%- endfor %}
-;
-    }
-
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-        {%- for field in metadata.fieldMappings %}
+        {%- for identifier in metadata.identifier %}
+
+            ->add('{{ identifier }}')
+
+        {%- endfor %}
+        {%- for field in metadata.associationMappings %}
+            {%- if field.type in render_associations %}
 
             ->add('{{ field.fieldName }}')
 
+            {%- endif %}
+        {%- endfor %}
+        {%- for field in metadata.fieldMappings %}
+            {%- if field.fieldName not in metadata.identifier %}
+                {%- if 'boolean' == field.type %}
+
+            ->add('{{ field.fieldName }}', null, array('editable' => true))
+
+                {%- else %}
+
+            ->add('{{ field.fieldName }}')
+
+                {%- endif %}
+            {%- endif %}
         {%- endfor %}
 
             ->add(
@@ -59,10 +106,24 @@ class {{ entityName }}Admin extends BaseAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-        {%- for field in metadata.fieldMappings %}
+        {%- for identifier in metadata.identifier %}
+
+            ->add('{{ identifier }}')
+
+        {%- endfor %}
+        {%- for field in metadata.associationMappings %}
+            {%- if field.type in render_associations %}
 
             ->add('{{ field.fieldName }}')
 
+            {%- endif %}
+        {%- endfor %}
+        {%- for field in metadata.fieldMappings %}
+            {%- if field.fieldName not in metadata.identifier %}
+
+            ->add('{{ field.fieldName }}')
+
+            {%- endif %}
         {%- endfor %}
 ;
     }

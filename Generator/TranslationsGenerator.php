@@ -91,7 +91,8 @@ class TranslationsGenerator extends Generator
             $trans['breadcrumb']['link_'.$entityNameCamelized.'_history'] = $entityName.' History';
         }
 
-        foreach ($metadata->fieldMappings as $field) {
+        $fields = array_merge($metadata->fieldMappings, $metadata->associationMappings);
+        foreach ($fields as $field) {
             $fieldName = $field['fieldName'];
             $key = $this->camelize($fieldName);
             if (!array_key_exists('label_'.$key, $trans['list'])) {
@@ -160,7 +161,8 @@ class TranslationsGenerator extends Generator
             $trans['breadcrumb']['link_'.$entityNameCamelized.'_history'] = 'Historique de '.$entityName;
         }
 
-        foreach ($metadata->fieldMappings as $field) {
+        $fields = array_merge($metadata->fieldMappings, $metadata->associationMappings);
+        foreach ($fields as $field) {
             $fieldName = $field['fieldName'];
             $key = $this->camelize($fieldName);
             if (!array_key_exists('label_'.$key, $trans['list'])) {
