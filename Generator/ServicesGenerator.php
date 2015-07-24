@@ -38,7 +38,21 @@ class ServicesGenerator extends Generator
      */
     public function generate($namespace, $basePath, ClassMetadata $metadata)
     {
-        $yamlFile = $basePath.'/Resources/config/services.yml';
+        $out = array();
+        $out[] = $this->generateManagers($namespace, $basePath, $metadata);
+        $out[] = $this->generateAdmins($namespace, $basePath, $metadata);
+
+        $out = array_merge(
+            $out,
+            $this->updateExtension($namespace, $basePath)
+        );
+
+        return $out;
+    }
+
+    protected function generateManagers($namespace, $basePath, ClassMetadata $metadata)
+    {
+        $yamlFile = $basePath.'/Resources/config/managers.yml';
         $bundleName = $this->getBundleName();
         $bundleNameCamelized = str_replace('_bundle', '', $this->camelize($bundleName));
         $entityName = $this->getEntityNameFromMetadata($metadata);
@@ -54,6 +68,26 @@ class ServicesGenerator extends Generator
             'arguments' => array('@service_container'),
         );
         $config['services'][$bundleNameCamelized.'.'.strtolower($entityName).'_manager'] = $managerService;
+
+        $out = Yaml::dump($config, 4);
+        if (file_put_contents($yamlFile, $out) !== false) {
+            return sprintf('<info>Update %s</info>', $yamlFile);
+        } else {
+            return sprintf('<error>Unable to update %s</error>', $yamlFile);
+        }
+    }
+
+    protected function generateAdmins($namespace, $basePath, ClassMetadata $metadata)
+    {
+        $yamlFile = $basePath.'/Resources/config/admins.yml';
+        $bundleName = $this->getBundleName();
+        $bundleNameCamelized = str_replace('_bundle', '', $this->camelize($bundleName));
+        $entityName = $this->getEntityNameFromMetadata($metadata);
+        if (is_file($yamlFile)) {
+            $config = Yaml::parse(file_get_contents($yamlFile));
+        } else {
+            $config = array();
+        }
 
         $adminServices = array(
             'class' => $namespace.'\\Admin\\'.$entityName.'Admin',
@@ -99,5 +133,27 @@ class ServicesGenerator extends Generator
         } else {
             return sprintf('<error>Unable to update %s</error>', $yamlFile);
         }
+    }
+
+    protected function updateExtension($namespace, $basePath)
+    {
+        $out = array();
+        $bundleName = $this->getBundleName();
+        $file = $basePath.'/DependencyInjection/'.str_replace('Bundle', 'Extension', $bundleName).'.php';
+        $content = file_get_contents($file);
+        $loadAdmins = !preg_match('/load\([\'\"]admins.yml[\'\"]\)/', $content);
+        $loadManagers = !preg_match('/load\([\'\"]managers.yml[\'\"]\)/', $content);
+
+        if ($loadAdmins || $loadManagers) {
+            $out[] = sprintf('<error>You must update your bundle\'s extension in %s.</error>', $file);
+        }
+        if ($loadAdmins) {
+            $out[] = sprintf('    <error>-> You must load the admins.yml file.</error>');
+        }
+        if ($loadManagers) {
+            $out[] = sprintf('    <error>-> You must load the managers.yml file.</error>');
+        }
+
+        return $out;
     }
 }
