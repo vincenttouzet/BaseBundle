@@ -27,18 +27,23 @@ use Sensio\Bundle\GeneratorBundle\Generator\Generator as BaseGenerator;
  */
 abstract class Generator extends BaseGenerator implements GeneratorInterface
 {
+    /** @var string */
     protected $skeletonDir = null;
-    private $_bundleName = null;
+    /** @var string */
+    private $bundleName = null;
+    /** @var string */
+    private $appDir;
 
     /**
      * __construct.
      *
      * @param string $bundleName Name of the bundle to make generation
      */
-    public function __construct($bundleName = '')
+    public function __construct($rootDir, $bundleName = '')
     {
         $this->setSkeletonDir(__DIR__.'/../Resources/skeletons/');
         $this->setBundleName($bundleName);
+        $this->appDir = $rootDir;
     }
 
     /**
@@ -127,7 +132,7 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
      */
     public function getBundleName()
     {
-        return $this->_bundleName;
+        return $this->bundleName;
     }
 
     /**
@@ -139,7 +144,7 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
      */
     public function setBundleName($bundleName)
     {
-        $this->_bundleName = $bundleName;
+        $this->bundleName = $bundleName;
 
         return $this;
     }
@@ -166,6 +171,14 @@ abstract class Generator extends BaseGenerator implements GeneratorInterface
         $this->skeletonDir = $skeletonDir;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppDir()
+    {
+        return $this->appDir;
     }
 
     public function getRelativeFilePath($fullPath)

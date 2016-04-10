@@ -12,11 +12,15 @@
  */
 namespace VinceT\BaseBundle\Command;
 
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use VinceT\BaseBundle\Generator\AdminGenerator;
 use VinceT\BaseBundle\Generator\AdminControllerGenerator;
 use VinceT\BaseBundle\Generator\ManagerGenerator;
@@ -36,9 +40,8 @@ use Doctrine\Bundle\DoctrineBundle\Mapping\DisconnectedMetadataFactory;
  */
 class GenerateCommand extends ContainerAwareCommand
 {
-    private $namespace = null;
-    private $basePath = null;
-    private $metadatas = null;
+    /** @var ClassMetadata */
+    private $metadata = null;
 
     /**
      * configure command.
@@ -48,8 +51,9 @@ class GenerateCommand extends ContainerAwareCommand
         parent::configure();
         $this
             ->setName('vincet:generate:entity')
+            ->setAliases(array('vincet:generate:admin'))
             ->addArgument('name', InputArgument::REQUIRED, 'A bundle name, a namespace, or a class name')
-            ->setDescription('Generates classes')
+            ->setDescription('Generates Admin classes (Admin, Controller, Manager) and translations')
             ->setHelp(
 <<<EOF
 The <info>vincet:generate:entity</info> command generates following classes.
@@ -88,15 +92,89 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
+        if (!$this->metadata) {
+            try {
+                $this->metadata = $this->retrieveMetadatas($input->getArgument('name'));
+            } catch (\Exception $e) {
+                $io->error($e->getMessage());
+                return;
+            }
+        }
+        $metadatas = $this->metadata->getMetadata();
+
+        $namespace = str_replace('\\Entity', '', $this->metadata->getNamespace());
+        $path = $this->metadata->getPath();
+
+        $basePath = sprintf(
+            '%s/%s',
+            $path,
+            str_replace('\\', '/', $namespace)
+        );
+
+        $appDir = $this->getContainer()->getParameter('kernel.root_dir');
+
+        $adminGenerator = new AdminGenerator($appDir);
+        $managerGenerator = new ManagerGenerator($appDir);
+        $adminCtlGenerator = new AdminControllerGenerator($appDir);
+        $servicesGenerator = new ServicesGenerator($appDir);
+        $transGenerator = new TranslationsGenerator($appDir);
+        foreach ($metadatas as $metadata) {
+            $entityName = $this->getEntityNameFromMetadata($metadata);
+            $output->writeln('');
+            $output->writeln(sprintf('Generate files for entity %s', $entityName));
+            // generate Admin class
+            $output->writeln($adminGenerator->generate($namespace, $basePath, $metadata));
+            // generate Manager class
+            $output->writeln($managerGenerator->generate($namespace, $basePath, $metadata));
+            // generate AdminController class
+            $output->writeln($adminCtlGenerator->generate($namespace, $basePath, $metadata));
+            // update translations
+            $transGenerator->setBundleName($this->getBundleNameFromEntity($metadata->rootEntityName));
+            $output->writeln($transGenerator->generate($namespace, $basePath, $metadata));
+            // update services.yml
+            $servicesGenerator->setBundleName($this->getBundleNameFromEntity($metadata->rootEntityName));
+            $output->writeln($servicesGenerator->generate($namespace, $basePath, $metadata));
+        }
+    }
+
+    /**
+     * command interaction.
+     *
+     * @param InputInterface  $input  InputInterface instance
+     * @param OutputInterface $output OutputInterface instance
+     */
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        $io = new SymfonyStyle($input, $output);
+        $io->title('Welcome to the VinceT Admin generator');
+
+        if (!$input->getArgument('name')) {
+            while (!$this->metadata) {
+                $question = new Question('Enter the model for admin generation');
+                $name = $io->askQuestion($question);
+                $input->setArgument('name', $name);
+                try {
+                    $this->metadata = $this->retrieveMetadatas($name);
+                } catch (\Exception $e) {
+                    $io->error($e->getMessage());
+                }
+            }
+        }
+    }
+
+    protected function retrieveMetadatas($name)
+    {
         $manager = new DisconnectedMetadataFactory($this->getContainer()->get('doctrine'));
 
         try {
-            $bundle = $this->getApplication()->getKernel()->getBundle($input->getArgument('name'));
+            $bundle = $this->getApplication()->getKernel()->getBundle($name);
 
             //$output->writeln(sprintf('Generating classes for bundle "<info>%s</info>"', $bundle->getName()));
             $metadata = $manager->getBundleMetadata($bundle);
         } catch (\InvalidArgumentException $e) {
-            $name = strtr($input->getArgument('name'), '/', '\\');
+            $name = strtr($name, '/', '\\');
 
             if (false !== $pos = strpos($name, ':')) {
                 $name = $this->getContainer()->get('doctrine')
@@ -112,66 +190,7 @@ EOF
             }
         }
 
-        $this->metadatas = $metadata->getMetadata();
-
-        $this->namespace = str_replace('\\Entity', '', $metadata->getNamespace());
-        $path = $metadata->getPath();
-
-        $this->basePath = sprintf(
-            '%s/%s',
-            $path,
-            str_replace('\\', '/', $this->namespace)
-        );
-
-        $adminGenerator = new AdminGenerator();
-        $managerGenerator = new ManagerGenerator();
-        $adminCtlGenerator = new AdminControllerGenerator();
-        $servicesGenerator = new ServicesGenerator();
-        $transGenerator = new TranslationsGenerator();
-        foreach ($this->getMetadatas() as $metadata) {
-            $entityName = $this->getEntityNameFromMetadata($metadata);
-            $output->writeln('');
-            $output->writeln(sprintf('Generate files for entity %s', $entityName));
-            // generate Admin class
-            $output->writeln($adminGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
-            // generate Manager class
-            $output->writeln($managerGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
-            // generate AdminController class
-            $output->writeln($adminCtlGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
-            // update services.yml
-            $servicesGenerator->setBundleName($this->getBundleNameFromEntity($metadata->rootEntityName));
-            $output->writeln($servicesGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
-            // update translations
-            $transGenerator->setBundleName($this->getBundleNameFromEntity($metadata->rootEntityName));
-            $output->writeln($transGenerator->generate($this->getNamespace(), $this->getBasePath(), $metadata));
-        }
-    }
-
-    /**
-     * command interaction.
-     *
-     * @param InputInterface  $input  InputInterface instance
-     * @param OutputInterface $output OutputInterface instance
-     */
-    protected function interact(InputInterface $input, OutputInterface $output)
-    {
-        $dialog = $this->getDialogHelper();
-        $dialog->writeSection($output, 'Welcome to the VinceT Admin generator');
-    }
-
-    /**
-     * getDialogHelper.
-     *
-     * @return \Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper
-     */
-    protected function getDialogHelper()
-    {
-        $dialog = $this->getHelperSet()->get('question');
-        if (!$dialog || get_class($dialog) !== 'Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper') {
-            $this->getHelperSet()->set($dialog = new QuestionHelper());
-        }
-
-        return $dialog;
+        return $metadata;
     }
 
     /**
@@ -211,35 +230,5 @@ EOF
         }
 
         return $bundleName;
-    }
-
-    /**
-     * getNamespace.
-     *
-     * @return string
-     */
-    public function getNamespace()
-    {
-        return $this->namespace;
-    }
-
-    /**
-     * getMetadata.
-     *
-     * @return \Doctrine\Bundle\DoctrineBundle\Mapping\ClassMetadataCollection
-     */
-    public function getMetadatas()
-    {
-        return $this->metadatas;
-    }
-
-    /**
-     * getBasePath.
-     *
-     * @return string
-     */
-    public function getBasePath()
-    {
-        return $this->basePath;
     }
 }

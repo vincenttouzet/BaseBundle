@@ -140,18 +140,37 @@ class ServicesGenerator extends Generator
         $out = array();
         $bundleName = $this->getBundleName();
         $file = $basePath.'/DependencyInjection/'.str_replace('Bundle', 'Extension', $bundleName).'.php';
-        $content = file_get_contents($file);
-        $loadAdmins = !preg_match('/load\([\'\"]admins.yml[\'\"]\)/', $content);
-        $loadManagers = !preg_match('/load\([\'\"]managers.yml[\'\"]\)/', $content);
+        // bundle use DI ?
+        if (file_exists($file)) {
+            $content = file_get_contents($file);
+            $loadAdmins = !preg_match('/load\([\'\"]admins.yml[\'\"]\)/', $content);
+            $loadManagers = !preg_match('/load\([\'\"]managers.yml[\'\"]\)/', $content);
 
-        if ($loadAdmins || $loadManagers) {
-            $out[] = sprintf('<error>You must update your bundle\'s extension in %s.</error>', $this->getRelativeFilePath($file));
-        }
-        if ($loadAdmins) {
-            $out[] = sprintf('    <error>-> You must load the admins.yml file.</error>');
-        }
-        if ($loadManagers) {
-            $out[] = sprintf('    <error>-> You must load the managers.yml file.</error>');
+            if ($loadAdmins || $loadManagers) {
+                $out[] = sprintf('<error>You must update your bundle\'s extension in %s.</error>', $this->getRelativeFilePath($file));
+            }
+            if ($loadAdmins) {
+                $out[] = sprintf('    <error>-> You must load the admins.yml file.</error>');
+            }
+            if ($loadManagers) {
+                $out[] = sprintf('    <error>-> You must load the managers.yml file.</error>');
+            }
+        } elseif (file_exists($this->getAppDir().'/config/config.yml')) {
+            $content = file_get_contents($this->getAppDir().'/config/config.yml');
+            $loadAdmins = !preg_match('/@'.$bundleName.'\/Resources\/config\/admins.yml/', $content);
+            $loadManagers = !preg_match('/@'.$bundleName.'\/Resources\/config\/managers.yml/', $content);
+
+            if ($loadAdmins || $loadManagers) {
+                $out[] = sprintf('<error>You must import admins.yml and managers.yml in %s.</error>', $this->getRelativeFilePath($this->getAppDir().'/config/config.yml'));
+                $out[] = '<comment>import:</comment>';
+                $out[] = '    # ...';
+            }
+            if ($loadAdmins) {
+                $out[] = sprintf('    <comment>- { resource: "@%s/Resources/config/admins.yml" }</comment>', $bundleName);
+            }
+            if ($loadManagers) {
+                $out[] = sprintf('    <comment>- { resource: "@%s/Resources/config/managers.yml" }</comment>', $bundleName);
+            }
         }
 
         return $out;
