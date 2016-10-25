@@ -222,9 +222,12 @@ EOF
         foreach ($bundles as $type => $bundle) {
             $className = get_class($bundle);
 
-            $entityClass = substr($rootEntityName, 0, strpos($rootEntityName, '\\Entity\\'));
+            $namespaceParts = explode('\\', $className);
+            array_pop($namespaceParts);
+            $bundleNamespace = implode('\\', $namespaceParts);
+            $entityBundleNamespace = substr($rootEntityName, 0, strpos($rootEntityName, '\\Entity\\'));
 
-            if (strpos($className, $entityClass) !== false) {
+            if ($bundleNamespace === $entityBundleNamespace) {
                 $bundleName = $type;
             }
         }
