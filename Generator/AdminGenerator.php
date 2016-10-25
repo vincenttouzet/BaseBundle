@@ -44,11 +44,17 @@ class AdminGenerator extends Generator
             $entityName
         );
 
+        $baseAdminClass = 'Sonata\AdminBundle\Admin\Admin';
+        if (class_exists('Sonata\AdminBundle\Admin\AbstractAdmin')) {
+            $baseAdminClass = 'Sonata\AdminBundle\Admin\AbstractAdmin';
+        }
+
         $parameters = array(
             'namespace' => $namespace,
             'entityName' => $entityName,
             'metadata' => $metadata,
-            'render_associations' => array(ClassMetadata::MANY_TO_ONE)
+            'render_associations' => array(ClassMetadata::MANY_TO_ONE),
+            'base_admin_class' => $baseAdminClass,
         );
 
         return $this->renderFile('admin.php.twig', $fileName, $parameters);
